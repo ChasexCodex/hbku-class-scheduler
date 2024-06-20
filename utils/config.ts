@@ -19,7 +19,8 @@ const configData = {
     projectId: required(process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID),
     storageBucket: required(process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET),
     messagingSenderId: required(process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID),
-  }
+  },
+  coursesApi: required(process.env.NEXT_PUBLIC_HOWDY_COURSES_URL),
 }
 
 type ConfigKey = keyof typeof configData
