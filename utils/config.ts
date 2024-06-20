@@ -11,7 +11,7 @@ const optional = (name?: string, def?: string) => {
 }
 
 const configData = {
-  env: optional(process.env.NEXT_PUBLIC_ENV, 'production'),
+  env: optional(process.env.NEXT_PUBLIC_APP_ENV, 'production'),
   firebase: {
     apiKey: required(process.env.NEXT_PUBLIC_FIREBASE_API_KEY),
     authDomain: required(process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN),
