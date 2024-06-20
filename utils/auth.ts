@@ -1,4 +1,4 @@
-import {signInWithEmailAndPassword} from "@firebase/auth";
+import {signInWithEmailAndPassword, signOut} from "@firebase/auth";
 import {auth} from "@/utils/firebase";
 
 export const login = async (data: FormData) => {
@@ -13,4 +13,23 @@ export const login = async (data: FormData) => {
     const {message} = e as Error
     return {success: false, error: message}
   }
+}
+
+export const logout = async () => {
+  try {
+    await signOut(auth)
+    return {success: true}
+  }
+  catch (e) {
+    const {message} = e as Error
+    return {success: false, error: message}
+  }
+}
+
+export const getUser = () => {
+  return auth.currentUser
+}
+
+export const isAuthenticated = () => {
+  return !!getUser()
 }

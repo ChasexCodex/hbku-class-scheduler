@@ -5,11 +5,6 @@ import {login} from "@/utils/auth";
 
 const inter = Inter({subsets: ["latin"]});
 
-type LoginData = {
-  email: string
-  password: string
-}
-
 export default function LoginPage() {
   const router = useRouter()
   const [error, setError] = useState<string | undefined>()
@@ -65,4 +60,5 @@ export default function LoginPage() {
     </main>
   )
 }
+
 
