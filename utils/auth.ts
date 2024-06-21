@@ -8,8 +8,7 @@ export const login = async (data: FormData) => {
   try {
     const res = await signInWithEmailAndPassword(auth, email, password)
     return {success: true, data: res}
-  }
-  catch (e) {
+  } catch (e) {
     const {message} = e as Error
     return {success: false, error: message}
   }
@@ -19,8 +18,7 @@ export const logout = async () => {
   try {
     await signOut(auth)
     return {success: true}
-  }
-  catch (e) {
+  } catch (e) {
     const {message} = e as Error
     return {success: false, error: message}
   }
@@ -28,6 +26,16 @@ export const logout = async () => {
 
 export const getUser = () => {
   return auth.currentUser
+}
+
+export const getUserDefinite = () => {
+  const user = getUser()
+
+  if (!user) {
+    throw new Error('User not found')
+  }
+
+  return user
 }
 
 export const isAuthenticated = () => {

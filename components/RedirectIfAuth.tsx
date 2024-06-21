@@ -6,27 +6,30 @@ type Props = PropsWithChildren<{
   redirectRoute: string
 }>
 
-function RequireAuth({children, redirectRoute}: Props) {
+function RedirectIfAuth({children, redirectRoute}: Props) {
   const router = useRouter()
 
   useEffect(() => {
-    isAuthenticated() || router.replace(redirectRoute)
+    if (isAuthenticated()) {
+      console.log('redirecting to ', redirectRoute)
+      router.replace(redirectRoute)
+    }
   }, [router, redirectRoute])
 
-  if (!isAuthenticated()) {
+  if (isAuthenticated()) {
     return null
   }
 
   return <>{children}</>
 }
 
-export default function requireAuth(Component: any, redirectRoute: string) {
+export default function redirectIfAuth(Component: any, redirectRoute: string) {
   // eslint-disable-next-line react/display-name
   return (props: any) => {
     return (
-      <RequireAuth redirectRoute={redirectRoute}>
+      <RedirectIfAuth redirectRoute={redirectRoute}>
         <Component {...props} />
-      </RequireAuth>
+      </RedirectIfAuth>
     )
   }
 }

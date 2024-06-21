@@ -7,7 +7,11 @@ type Props = {
   pageProps: AppProps["pageProps"]
 }
 
-const defaultLayout = ({children}: { children: ReactNode }) => <>{children}</>;
+const defaultLayout = ({children}: { children: ReactNode }) => (
+  <>
+    {children}
+  </>
+)
 
 export default function App({Component, pageProps}: Props) {
   const Layout = Component.layout || defaultLayout;

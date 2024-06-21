@@ -2,10 +2,11 @@ import {Inter} from "next/font/google";
 import {useState} from "react";
 import {useRouter} from "next/router";
 import {login} from "@/utils/auth";
+import redirectIfAuth from "@/components/RedirectIfAuth";
 
 const inter = Inter({subsets: ["latin"]});
 
-export default function LoginPage() {
+function LoginPage() {
   const router = useRouter()
   const [error, setError] = useState<string | undefined>()
 
@@ -61,4 +62,4 @@ export default function LoginPage() {
   )
 }
 
-
+export default redirectIfAuth(LoginPage, '/student/dashboard')

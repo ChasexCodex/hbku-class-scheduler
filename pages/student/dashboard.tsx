@@ -1,8 +1,9 @@
 import {getUser, logout} from "@/utils/auth";
 import {useRouter} from "next/router";
-import RequireAuth from "@/components/RequireAuth";
+import requireAuth from "@/components/RequireAuth";
+import Link from "next/link";
 
-export default function StudentDashboard() {
+function StudentDashboard() {
   const router = useRouter()
 
   const handleSubmit = async (e: any) => {
@@ -21,13 +22,14 @@ export default function StudentDashboard() {
   }
 
   return (
-    <RequireAuth redirectRoute={'/student/login'}>
       <div>
         <form onSubmit={handleSubmit}>
           <button type="submit">Logout</button>
         </form>
-        {getUser()?.displayName}
+        <Link href="/student/details">Details</Link>
+        <p>{getUser()?.displayName}</p>
       </div>
-    </RequireAuth>
   )
 }
+
+export default requireAuth(StudentDashboard, '/student/login')
