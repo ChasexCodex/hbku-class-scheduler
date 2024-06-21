@@ -1,8 +1,8 @@
 import {getStudentData} from "@/utils/students";
-import requireAuth from "@/components/RequireAuth";
 import {useEffect, useState} from "react";
+import AuthRedirect from "@/components/AuthRedirect";
 
-function Details() {
+export default function Details() {
   const [studentData, setStudentData] = useState<object | undefined>()
 
   useEffect(() => {
@@ -15,11 +15,11 @@ function Details() {
   }, [])
 
   return (
-    <div>
-      <h1>Student Details</h1>
-      {JSON.stringify(studentData)}
-    </div>
+    <AuthRedirect>
+      <div>
+        <h1>Student Details</h1>
+        {JSON.stringify(studentData)}
+      </div>
+    </AuthRedirect>
   )
 }
-
-export default requireAuth(Details, '/student/login')

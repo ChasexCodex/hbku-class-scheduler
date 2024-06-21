@@ -41,3 +41,9 @@ export const getUserDefinite = () => {
 export const isAuthenticated = () => {
   return !!getUser()
 }
+
+export const onAuthStateChange = (callback: (user: any) => void) => {
+  return auth.onAuthStateChanged(user => {
+    callback(user)
+  })
+}
