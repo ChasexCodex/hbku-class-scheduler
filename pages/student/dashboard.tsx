@@ -1,24 +1,24 @@
-import {getUser, logout} from "@/utils/auth";
-import {useRouter} from "next/router";
-import AuthRedirect from "@/components/AuthRedirect";
 import Link from "next/link";
+import {logout} from "@/utils/auth";
+import AuthRedirect from "@/components/AuthRedirect";
+import {useAuth} from "@/hooks/AuthContext";
+
 
 export default function StudentDashboard() {
-  const router = useRouter()
+  const {user} = useAuth()
 
   const handleSubmit = async (e: any) => {
     e.preventDefault()
 
-    try {
-      const res = await logout();
-      if (res.success) {
-        return router.replace('/student/login')
-      }
-    } catch (e) {
-      console.log(e)
+    const res = await logout()
+
+    if (res.success) {
+      console.log('Logout successful')
+      return
     }
 
-    console.log('Failed to logout')
+    console.log('Logout failed', res.error)
+    // TODO: display error
   }
 
   return (
@@ -28,7 +28,7 @@ export default function StudentDashboard() {
           <button type="submit">Logout</button>
         </form>
         <Link href="/student/details">Details</Link>
-        <p>{getUser()?.displayName}</p>
+        <p>{user.displayName}</p>
       </div>
     </AuthRedirect>
   )

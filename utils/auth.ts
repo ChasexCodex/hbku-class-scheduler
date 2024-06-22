@@ -24,24 +24,6 @@ export const logout = async () => {
   }
 }
 
-export const getUser = () => {
-  return auth.currentUser
-}
-
-export const getUserDefinite = () => {
-  const user = getUser()
-
-  if (!user) {
-    throw new Error('User not found')
-  }
-
-  return user
-}
-
-export const isAuthenticated = () => {
-  return !!getUser()
-}
-
 export const onAuthStateChange = (callback: (user: any) => void) => {
   return auth.onAuthStateChanged(user => {
     callback(user)

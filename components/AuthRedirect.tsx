@@ -17,12 +17,12 @@ export default function AuthRedirect({children, optionalAuth}: Props) {
   useEffect(() => {
     if (loading) return
 
-    if (!optionalAuth && !user) {
+    if (!optionalAuth && !user.data) {
       router.push(loginRoute)
       return
     }
 
-    if (optionalAuth && user) {
+    if (optionalAuth && user.data) {
       router.push(dashboardRoute)
       return
     }

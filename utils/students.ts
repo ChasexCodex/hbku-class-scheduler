@@ -1,12 +1,10 @@
-import {getDoc, doc, collection, getDocs} from "@firebase/firestore";
+import {getDoc, doc} from "@firebase/firestore";
 import {db} from "@/utils/firebase";
-import {getUserDefinite} from "@/utils/auth";
+import {User} from "@/types";
 
-export const getStudentData = async () => {
-  const user = getUserDefinite()
-
-  console.log(user.uid)
-  const d = doc(db, 'students', user.uid)
+export const getStudentData = async (user: User) => {
+  console.log(user.data.uid)
+  const d = doc(db, 'students', user.data.uid)
   const snapshot = await getDoc(d);
 
   if (!snapshot.exists()) {
