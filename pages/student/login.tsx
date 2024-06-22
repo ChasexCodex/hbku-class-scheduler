@@ -2,11 +2,11 @@ import {Inter} from "next/font/google";
 import {useState} from "react";
 import {useRouter} from "next/router";
 import {login} from "@/utils/auth";
-import AuthRedirect from "@/components/AuthRedirect";
+import AuthGuard from "@/components/AuthGuard";
 
 const inter = Inter({subsets: ["latin"]});
 
-export default function LoginPage() {
+function LoginPage() {
   const router = useRouter()
   const [error, setError] = useState<string | undefined>()
 
@@ -25,7 +25,6 @@ export default function LoginPage() {
   }
 
   return (
-    <AuthRedirect optionalAuth={true}>
       <main className={`h-screen w-screen flex justify-center items-center bg-zinc-900 ${inter.className}`}>
         <form onSubmit={handleSubmit}
               className="grid grid-cols-5 border-2 p-16 rounded-3xl gap-x-20 gap-y-10 shadow-md shadow-white bg-zinc-800">
@@ -60,6 +59,7 @@ export default function LoginPage() {
           }
         </form>
       </main>
-    </AuthRedirect>
   )
 }
+
+export default AuthGuard(LoginPage, true)

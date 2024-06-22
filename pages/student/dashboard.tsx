@@ -1,10 +1,10 @@
 import Link from "next/link";
 import {logout} from "@/utils/auth";
-import AuthRedirect from "@/components/AuthRedirect";
+import AuthGuard from "@/components/AuthGuard";
 import {useAuth} from "@/hooks/AuthContext";
 
 
-export default function StudentDashboard() {
+function StudentDashboard() {
   const {user} = useAuth()
 
   const handleSubmit = async (e: any) => {
@@ -22,14 +22,14 @@ export default function StudentDashboard() {
   }
 
   return (
-    <AuthRedirect>
-      <div>
-        <form onSubmit={handleSubmit}>
-          <button type="submit">Logout</button>
-        </form>
-        <Link href="/student/details">Details</Link>
-        <p>{user.displayName}</p>
-      </div>
-    </AuthRedirect>
+    <div>
+      <form onSubmit={handleSubmit}>
+        <button type="submit">Logout</button>
+      </form>
+      <Link href="/student/details">Details</Link>
+      <p>{user.displayName}</p>
+    </div>
   )
 }
+
+export default AuthGuard(StudentDashboard)
