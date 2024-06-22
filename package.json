@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "emulators": "firebase emulators:start --only auth,firestore --import=./.firebase --export-on-exit"
+    "emulators": "firebase emulators:start --only auth,firestore --import=./.firebase --export-on-exit",
+    "dev-em": "concurrently \"next dev\" \"yarn emulators\""
   },
   "dependencies": {
     "firebase": "^10.12.2",
@@ -19,6 +20,7 @@
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "concurrently": "^8.2.2",
     "eslint": "^8",
     "eslint-config-next": "14.2.4",
     "postcss": "^8",
