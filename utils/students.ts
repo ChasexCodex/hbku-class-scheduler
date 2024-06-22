@@ -1,14 +1,31 @@
-import {getDoc, doc} from "@firebase/firestore";
+import {getDoc, doc, updateDoc} from "@firebase/firestore";
 import {db} from "@/utils/firebase";
-import {User} from "@/types";
+import {StudentData} from "@/types";
 
-export const getStudentData = async (user: User) => {
-  const d = doc(db, 'students', user.data.uid)
+export const getStudentData = async (uid: string) => {
+  const d = doc(db, 'students', uid)
   const snapshot = await getDoc(d);
 
   if (!snapshot.exists()) {
-    return null
+    throw new Error('Student data not found')
   }
 
-  return snapshot.data()
+  return snapshot.data() as StudentData
+}
+
+export const updateStudentData = async (uid: string, data: object) => {
+  const d = doc(db, 'students', uid)
+  return await updateDoc(d, data)
+    .then(() => ({
+      success: true,
+      data,
+    }))
+    .catch(e => {
+      console.log(e)
+
+      return ({
+        success: false,
+        error: e,
+      });
+    })
 }
