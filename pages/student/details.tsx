@@ -17,7 +17,8 @@ function Details() {
       name: formData.get('name'),
       year: formData.get('year'),
       uid: formData.get('uid'),
-      courses: formData.getAll('courses[]')
+      texas_courses: formData.getAll('texas_courses[]'),
+      hbku_courses: formData.getAll('hbku_courses[]'),
     }
 
     await update(data)
@@ -46,7 +47,10 @@ function Details() {
         <input type="number" name="uid" defaultValue={studentData.uid}/>
         <br/>
 
-        <CourseList data={studentData}/>
+        <p className="text-white font-bold">Texas Courses</p>
+        <CourseList courses={studentData.texas_courses} type="texas"/>
+        <p className="text-white font-bold">HBKU Courses</p>
+        <CourseList courses={studentData.hbku_courses} type="hbku"/>
 
         <button type="submit" className="text-white">Update</button>
       </form>

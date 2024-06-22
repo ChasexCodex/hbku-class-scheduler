@@ -1,12 +1,12 @@
 import {useState} from "react";
-import {StudentData} from "@/types";
 
 type Props = {
-  data: StudentData
+  courses: string[]
+  type: string
 }
 
-const CourseList = ({data}: Props) => {
-  const [courses, setCourses] = useState(data.courses || []);
+const CourseList = ({courses: data, type}: Props) => {
+  const [courses, setCourses] = useState(data || []);
 
   const handleAddCourse = () => {
     setCourses([...courses, '']);
@@ -29,7 +29,7 @@ const CourseList = ({data}: Props) => {
           <div key={i}>
             <input
               type="text"
-              name="courses[]"
+              name={`${type}_courses[]`}
               value={course}
               onChange={(e) => handleChangeCourse(i, e.target.value)}
             />
