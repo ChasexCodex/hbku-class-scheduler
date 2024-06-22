@@ -1,4 +1,4 @@
-import {getDoc, doc, updateDoc, setDoc} from "@firebase/firestore";
+import {doc, getDoc, getDocs, setDoc, updateDoc, collection} from "@firebase/firestore";
 import {db} from "@/utils/firebase";
 import {StudentData} from "@/types";
 
@@ -45,4 +45,10 @@ export const createStudentData = async (uid: string, data: object) => {
         error: e,
       });
     })
+}
+
+export const getAllStudentsData = async () => {
+  const students = await getDocs(collection(db, 'students'))
+
+  return students.docs.map(doc => doc.data() as StudentData)
 }
