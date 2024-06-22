@@ -1,11 +1,11 @@
 import Link from "next/link";
 import {logout} from "@/utils/auth";
 import AuthGuard from "@/components/AuthGuard";
-import {useAuth} from "@/hooks/AuthContext";
+import useAdmin from "@/hooks/useAdmin";
 
 
 function StudentDashboard() {
-  const {user} = useAuth()
+  const {user, admin, loading} = useAdmin()
 
   const handleSubmit = async (e: any) => {
     e.preventDefault()
@@ -28,6 +28,9 @@ function StudentDashboard() {
       </form>
       <Link href="/student/details">Details</Link>
       <p>{user.displayName}</p>
+      {!loading && admin &&
+        <Link href="/student/table">Table</Link>
+      }
     </div>
   )
 }
