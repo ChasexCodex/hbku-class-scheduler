@@ -5,7 +5,6 @@ import Loading from "@/components/Loading";
 import CourseList from "@/components/CourseList";
 
 function Details() {
-  const {user} = useAuth()
   const {data, isLoading, error, update} = useStudentData()
   const studentData = data!
 
@@ -37,7 +36,7 @@ function Details() {
       <h1>Student Details</h1>
       {studentData && JSON.stringify(studentData)}
       <form onSubmit={handleSubmit} className="text-black">
-        <input type="text" name="name" placeholder="Name" defaultValue={user.data.displayName}/>
+        <input type="text" name="name" placeholder="Name" defaultValue={studentData.name}/>
         <select name="year" defaultValue={studentData.year}>
           <option value="1">Freshman</option>
           <option value="2">Sophomore</option>

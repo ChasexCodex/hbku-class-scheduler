@@ -1,5 +1,4 @@
 import AdminGuard from "@/components/AdminGuard";
-import {useAuth} from "@/hooks/AuthContext";
 
 const TablePage = () => {
   return (

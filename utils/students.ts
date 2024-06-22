@@ -1,4 +1,4 @@
-import {getDoc, doc, updateDoc} from "@firebase/firestore";
+import {getDoc, doc, updateDoc, setDoc} from "@firebase/firestore";
 import {db} from "@/utils/firebase";
 import {StudentData} from "@/types";
 
@@ -16,6 +16,23 @@ export const getStudentData = async (uid: string) => {
 export const updateStudentData = async (uid: string, data: object) => {
   const d = doc(db, 'students', uid)
   return await updateDoc(d, data)
+    .then(() => ({
+      success: true,
+      data,
+    }))
+    .catch(e => {
+      console.log(e)
+
+      return ({
+        success: false,
+        error: e,
+      });
+    })
+}
+
+export const createStudentData = async (uid: string, data: object) => {
+  const d = doc(db, 'students', uid)
+  return await setDoc(d, data)
     .then(() => ({
       success: true,
       data,
