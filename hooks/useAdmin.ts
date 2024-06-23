@@ -8,7 +8,7 @@ const useAdmin = () => {
   useEffect(() => {
     if (loading) return
 
-    if (!user) {
+    if (!user.data) {
       setAdmin(false)
       return
     }

@@ -23,6 +23,14 @@ export const toMinutes = (s: string) => {
   return minutes + 60 * (hours + shift)
 }
 
+// the reverse of toMinutes
+export const toTime = (minutes: number) => {
+  const hours = Math.floor(minutes / 60)
+  const mins = minutes % 60
+
+  return `${hours % 12}:${mins < 10 ? '0' : ''}${mins} ${hours >= 12 ? 'PM' : 'AM'}`
+}
+
 const getLectureDay = (lecture: JsonClob): number => {
   const swvDay = days.find(e => lecture[e])
   if (!swvDay) {
@@ -51,4 +59,29 @@ export const getLectureTimings = (howdyCourses: SWVEntry[], students: StudentDat
     end: toMinutes(e.SSRMEET_END_TIME),
     day: getLectureDay(e),
   }))
+}
+
+export const groupIfOverlap = (timings: LectureTime[]): LectureTime[][] => {
+  if (timings.length === 0) return []
+
+  const sorted = timings.sort((a, b) => a.start - b.start)
+
+  let groups = []
+  let currentGroup = [sorted[0]]
+
+  for (let i = 1; i < sorted.length; i++) {
+    const current = sorted[i]
+    const last = currentGroup[currentGroup.length - 1]
+
+    if (current.start < last.end) {
+      currentGroup.push(current)
+    } else {
+      groups.push(currentGroup)
+      currentGroup = [current]
+    }
+  }
+
+  groups.push(currentGroup)
+
+  return groups
 }
