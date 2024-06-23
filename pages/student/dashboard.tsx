@@ -2,6 +2,9 @@ import Link from "next/link";
 import {logout} from "@/utils/auth";
 import AuthGuard from "@/components/AuthGuard";
 import useAdmin from "@/hooks/useAdmin";
+import UserLayout from "@/layouts/UserLayout";
+import {PageWithLayout} from "@/types";
+import ThemeSwitch from "@/components/ThemeSwitch";
 
 
 function StudentDashboard() {
@@ -31,8 +34,11 @@ function StudentDashboard() {
       {!loading && admin &&
         <Link href="/student/table">Table</Link>
       }
+      <ThemeSwitch/>
     </div>
   )
 }
 
-export default AuthGuard(StudentDashboard)
+const expo: PageWithLayout = AuthGuard(StudentDashboard)
+expo.layout = UserLayout
+export default expo

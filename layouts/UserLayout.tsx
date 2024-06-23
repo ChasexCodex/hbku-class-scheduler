@@ -5,7 +5,7 @@ const inter = Inter({subsets: ["latin"]});
 
 export default function UserLayout({children}: PropsWithChildren) {
   return (
-    <main className={`h-screen w-screen flex justify-center items-center ${inter.className}`}>
+    <main className={`min-h-screen w-screen ${inter.className}`}>
       {children}
     </main>
   )

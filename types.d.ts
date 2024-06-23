@@ -1,3 +1,5 @@
+import {ComponentType} from "react";
+
 export type User = {
   data: any
 }
@@ -64,3 +66,5 @@ interface JsonClob {
   SSRMEET_ROOM_CODE: string;
   SSRMEET_MTYP_CODE: string;
 }
+
+export type PageWithLayout = ComponentType & { layout?: ComponentType }
