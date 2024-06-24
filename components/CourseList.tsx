@@ -3,9 +3,15 @@ import {useState} from "react";
 type Props = {
   courses: string[]
   type: string
+  courseInfoCallback: (crn: string) => {
+    name: string
+    title: string
+    section?: string
+    instructor: string
+  } | undefined
 }
 
-const CourseList = ({courses: data, type}: Props) => {
+const CourseList = ({courses: data, courseInfoCallback, type}: Props) => {
   const [courses, setCourses] = useState(data || []);
 
   const handleAddCourse = () => {
@@ -32,12 +38,18 @@ const CourseList = ({courses: data, type}: Props) => {
               name={`${type}_courses[]`}
               value={course}
               onChange={(e) => handleChangeCourse(i, e.target.value)}
+              className="dark:text-white"
             />
             <button className="text-white" type="button" onClick={() => handleRemoveCourse(i)}>
               Remove
             </button>
             <div className="text-white">
-              {course}
+              {Object.entries(courseInfoCallback(course) || {'': 'Incorrect CRN'}).map(([key, value]) => (
+                <div key={key}>
+                  <span>{key}: </span>
+                  <span>{value}</span>
+                </div>
+              ))}
             </div>
           </div>
         ))}

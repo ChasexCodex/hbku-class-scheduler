@@ -93,3 +93,18 @@ export const updateHBKUCourses = async (courses: HBKUCourse[]) => {
     }
   }
 }
+
+export const getAllTexasCourses = (term: string) => async (url: string) => {
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      "startRow": 0,
+      "endRow": 0,
+      "termCode": term,
+      "publicSearch": "Y"
+    })
+  })
+
+  return await res.json()
+}

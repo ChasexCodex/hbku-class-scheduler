@@ -16,12 +16,15 @@ const useMultipleSWR = (requests: SWRRequest[]) => {
   const isLoading = results.some(result => result.isLoading);
   const error = results.find(result => result.error)?.error;
   const data = Object.fromEntries(results.map(({dataName, data}) => ([dataName, data])))
-
+  const mutate = Object.fromEntries(results.map(({dataName, mutate}) => ([dataName, mutate])))
+  const isValidating = results.some(result => result.isValidating);
 
   return {
     data,
     error,
     isLoading,
+    mutate,
+    isValidating,
   };
 };
 
