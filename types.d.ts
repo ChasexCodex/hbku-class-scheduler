@@ -68,3 +68,10 @@ interface JsonClob {
 }
 
 export type PageWithLayout = ComponentType & { layout?: ComponentType }
+
+export type HBKUCourse = {
+  crn: string
+  name: string
+  title: string
+  instructor: string[]
+}

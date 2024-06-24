@@ -3,7 +3,11 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     match /students/{studentId} {
-      allow read, write: if request.auth != null && (request.auth.uid == studentId || request.auth.token.admin == true);
+      allow read, write: if request.auth != null && (request.auth.uid == studentId || request.auth.token.admin);
+    }
+
+    match /hbku_courses/{id} {
+      allow read, write: if request.auth != null && request.auth.token.admin;
     }
   }
 }

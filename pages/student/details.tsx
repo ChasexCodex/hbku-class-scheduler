@@ -1,5 +1,4 @@
 import AuthGuard from "@/components/AuthGuard";
-import {useAuth} from "@/hooks/AuthContext";
 import useStudentData from "@/hooks/useStudentData";
 import Loading from "@/components/Loading";
 import CourseList from "@/components/CourseList";
