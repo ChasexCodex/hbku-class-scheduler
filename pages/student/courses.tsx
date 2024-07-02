@@ -36,10 +36,6 @@ const Courses = () => {
     }])
   }
 
-  const updateCourse = (index: number, updatedCourse: HBKUCourseType & { id: number }) => {
-    setCourses(courses.map((course, i) => i === index ? updatedCourse : course));
-  }
-
   const handleRemoveCourse = (index: number) => {
     setCourses(courses.filter((_, i) => i !== index))
   }
@@ -72,9 +68,7 @@ const Courses = () => {
         <div className="grid grid-cols-2 gap-4">
           {
             courses.map((course, i) => (
-              <HBKUCourse key={course.id} remove={() => handleRemoveCourse(i)}
-                          updateCourse={(updatedCourse) => updateCourse(i, {...updatedCourse, id: course.id})}
-                          data={course}/>
+              <HBKUCourse key={course.id} remove={() => handleRemoveCourse(i)} initialData={course}/>
             ))
           }
         </div>
