@@ -7,7 +7,7 @@ type Props = {
     name: string
     title: string
     section?: string
-    instructor: string
+    instructor: string | string[]
   } | undefined
 }
 

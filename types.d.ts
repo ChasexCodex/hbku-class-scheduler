@@ -28,7 +28,7 @@ interface SWVEntry {
   SWV_CLASS_SEARCH_HOURS_LOW: number;
   SWV_CLASS_SEARCH_INSTRCTR_JSON: string | Instructor[];
   SWV_CLASS_SEARCH_INST_TYPE: string;
-  SWV_CLASS_SEARCH_JSON_CLOB: JsonClob[];
+  SWV_CLASS_SEARCH_JSON_CLOB: JsonClob[] | string;
   SWV_CLASS_SEARCH_MAX_ENRL: string;
   SWV_CLASS_SEARCH_PTRM: string;
   SWV_CLASS_SEARCH_SCHD: string;

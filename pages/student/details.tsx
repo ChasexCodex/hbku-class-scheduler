@@ -2,7 +2,7 @@ import AuthGuard from "@/components/AuthGuard";
 import useStudentData from "@/hooks/useStudentData";
 import Loading from "@/components/Loading";
 import CourseList from "@/components/CourseList";
-import {HBKUCourseType, SWVEntry} from "@/types";
+import {getHBKUCourseDetails, getTexasCourseDetails} from "@/utils/students";
 
 function Details() {
   const {data, isLoading, error, update} = useStudentData('202433')
@@ -31,31 +31,6 @@ function Details() {
     return <div>{error.message}</div>
   }
 
-  const getHBKUCourseDetails = (crn: string) => {
-    const course = data.hbkuCourses.find((course: HBKUCourseType) => course.crn === crn)
-
-    if (!course) return undefined
-
-    return {
-      name: course.name,
-      title: course.title,
-      instructor: course.instructor
-    }
-  }
-
-  const getTexasCourseDetails = (crn: string) => {
-    const course: SWVEntry | undefined = data.howdy.find((course: SWVEntry) => course.SWV_CLASS_SEARCH_CRN === crn)
-
-    if (!course) return undefined
-
-    return {
-      name: course.SWV_CLASS_SEARCH_COURSE,
-      title: course.SWV_CLASS_SEARCH_TITLE,
-      section: course.SWV_CLASS_SEARCH_SECTION,
-      instructor: Array.isArray(course.SWV_CLASS_SEARCH_INSTRCTR_JSON) ? course.SWV_CLASS_SEARCH_INSTRCTR_JSON[0].NAME : JSON.parse(course.SWV_CLASS_SEARCH_INSTRCTR_JSON).NAME,
-    }
-  }
-
   return (
     <div>
       <h1>Student Details</h1>
@@ -71,9 +46,9 @@ function Details() {
         <br/>
 
         <p className="text-white font-bold">Texas Courses</p>
-        <CourseList courseInfoCallback={getTexasCourseDetails} courses={studentData.texas_courses} type="texas"/>
+        <CourseList courseInfoCallback={(c) => getTexasCourseDetails(c, data.howdy)} courses={studentData.texas_courses} type="texas"/>
         <p className="text-white font-bold">HBKU Courses</p>
-        <CourseList courseInfoCallback={getHBKUCourseDetails} courses={studentData.hbku_courses} type="hbku"/>
+        <CourseList courseInfoCallback={(c) => getHBKUCourseDetails(c, data.hbkuCourses)} courses={studentData.hbku_courses} type="hbku"/>
 
         <button type="submit" className="text-white">Update</button>
       </form>

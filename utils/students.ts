@@ -1,6 +1,6 @@
 import {doc, getDoc, getDocs, setDoc, updateDoc, collection, writeBatch} from "@firebase/firestore";
 import {db} from "@/utils/firebase";
-import {HBKUCourseType, StudentData} from "@/types";
+import {HBKUCourseType, StudentData, SWVEntry} from "@/types";
 
 export const getStudentData = async (uid: string) => {
   const d = doc(db, 'students', uid)
@@ -107,4 +107,29 @@ export const getAllTexasCourses = (term: string) => async (url: string) => {
   })
 
   return await res.json()
+}
+
+export const getHBKUCourseDetails = (crn: string, hbkuCourses: HBKUCourseType[]) => {
+  const course = hbkuCourses.find((course: HBKUCourseType) => course.crn === crn)
+
+  if (!course) return undefined
+
+  return {
+    name: course.name,
+    title: course.title,
+    instructor: course.instructor
+  }
+}
+
+export const getTexasCourseDetails = (crn: string, howdy: SWVEntry[]) => {
+  const course: SWVEntry | undefined = howdy.find((course: SWVEntry) => course.SWV_CLASS_SEARCH_CRN === crn)
+
+  if (!course) return undefined
+
+  return {
+    name: `${course.SWV_CLASS_SEARCH_SUBJECT} ${course.SWV_CLASS_SEARCH_COURSE}`,
+    title: course.SWV_CLASS_SEARCH_TITLE,
+    section: course.SWV_CLASS_SEARCH_SECTION,
+    instructor: Array.isArray(course.SWV_CLASS_SEARCH_INSTRCTR_JSON) ? course.SWV_CLASS_SEARCH_INSTRCTR_JSON[0].NAME : JSON.parse(course.SWV_CLASS_SEARCH_INSTRCTR_JSON).NAME,
+  }
 }

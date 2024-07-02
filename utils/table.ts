@@ -10,7 +10,7 @@ const days: Partial<keyof JsonClob>[] = [
   'SSRMEET_SAT_DAY',
 ]
 
-const getDistinctCoursesList = (students: StudentData[]): string[] => {
+export const getDistinctCoursesList = (students: StudentData[]): string[] => {
   return [...Array.from(new Set(students.flatMap(student => student.texas_courses)))]
 }
 
@@ -40,8 +40,7 @@ const getLectureDay = (lecture: JsonClob): number => {
   return days.indexOf(swvDay)
 }
 
-export const getLectureTimings = (howdyCourses: SWVEntry[], students: StudentData[]): LectureTime[] => {
-  const crns = getDistinctCoursesList(students)
+export const getLectureTimings = (crns: string[], howdyCourses: SWVEntry[]): LectureTime[] => {
 
   const courses = crns.map(e => howdyCourses.find(c => c.SWV_CLASS_SEARCH_CRN === e))
 
