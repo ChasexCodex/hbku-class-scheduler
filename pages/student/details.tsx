@@ -2,7 +2,7 @@ import AuthGuard from "@/components/AuthGuard";
 import useStudentData from "@/hooks/useStudentData";
 import Loading from "@/components/Loading";
 import CourseList from "@/components/CourseList";
-import {HBKUCourse, SWVEntry} from "@/types";
+import {HBKUCourseType, SWVEntry} from "@/types";
 
 function Details() {
   const {data, isLoading, error, update} = useStudentData('202433')
@@ -32,7 +32,7 @@ function Details() {
   }
 
   const getHBKUCourseDetails = (crn: string) => {
-    const course = data.hbkuCourses.find((course: HBKUCourse) => course.crn === crn)
+    const course = data.hbkuCourses.find((course: HBKUCourseType) => course.crn === crn)
 
     if (!course) return undefined
 

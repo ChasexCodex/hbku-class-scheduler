@@ -1,11 +1,11 @@
 import useSWR from "swr";
 import {getAllHBKUCourses, updateHBKUCourses} from "@/utils/students";
-import {HBKUCourse} from "@/types";
+import {HBKUCourseType} from "@/types";
 
 const useHBKUCourses = () => {
   const swr = useSWR('hbku_courses', getAllHBKUCourses)
 
-  const update = async (courses: HBKUCourse[]) => {
+  const update = async (courses: HBKUCourseType[]) => {
     const res = await updateHBKUCourses(courses)
 
     if (res.success)

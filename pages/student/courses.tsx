@@ -1,36 +1,9 @@
 import AdminGuard from "@/components/AdminGuard";
 import useHBKUCourses from "@/hooks/useHBKUCourses";
 import Loading from "@/components/Loading";
-import {HBKUCourse} from "@/types";
+import {HBKUCourseType} from "@/types";
 import {useEffect, useState} from "react";
-
-const Course = ({data: course, remove, updateCourse}: {
-  data: HBKUCourse,
-  remove: () => void,
-  updateCourse: (updatedCourse: HBKUCourse) => void
-}) => {
-  const handleChange = (field: keyof HBKUCourse, value: string) => {
-    updateCourse({
-      ...course,
-      [field]: value,
-    });
-  };
-
-  return (
-    <div className="grid grid-cols-2 border p-1 rounded-md">
-      <label htmlFor="crn[]">CRN</label>
-      <input type="text" name="crn[]" value={course.crn} onChange={(e) => handleChange('crn', e.target.value)}/>
-      <label htmlFor="crn[]">Title</label>
-      <input type="text" name="title[]" value={course.title} onChange={(e) => handleChange('title', e.target.value)}/>
-      <label htmlFor="crn[]">Name</label>
-      <input type="text" name="name[]" value={course.name} onChange={(e) => handleChange('name', e.target.value)}/>
-      <label htmlFor="crn[]">Instructors</label>
-      <input type="text" name="instructor[]" value={course.instructor}
-             onChange={(e) => handleChange('instructor', e.target.value)}/>
-      <button type="button" onClick={remove}>Remove</button>
-    </div>
-  )
-}
+import HBKUCourse from "@/components/HBKUCourse";
 
 function idify<T>(e: T) {
   return {...e, id: Math.random()}
@@ -64,7 +37,7 @@ const Courses = () => {
     }])
   }
 
-  const updateCourse = (index: number, updatedCourse: HBKUCourse & { id: number }) => {
+  const updateCourse = (index: number, updatedCourse: HBKUCourseType & { id: number }) => {
     setCourses(courses.map((course, i) => i === index ? updatedCourse : course));
   }
 
@@ -104,7 +77,7 @@ const Courses = () => {
         <div className="grid grid-cols-2 gap-4">
           {
             courses.map((course, i) => (
-              <Course key={course.id} remove={() => handleRemoveCourse(i)}
+              <HBKUCourse key={course.id} remove={() => handleRemoveCourse(i)}
                       updateCourse={(updatedCourse) => updateCourse(i, {...updatedCourse, id: course.id})}
                       data={course}/>
             ))

@@ -1,6 +1,6 @@
 import {doc, getDoc, getDocs, setDoc, updateDoc, collection, writeBatch} from "@firebase/firestore";
 import {db} from "@/utils/firebase";
-import {HBKUCourse, StudentData} from "@/types";
+import {HBKUCourseType, StudentData} from "@/types";
 
 export const getStudentData = async (uid: string) => {
   const d = doc(db, 'students', uid)
@@ -56,15 +56,15 @@ export const getAllStudentsData = async ({}) => {
 export const getAllHBKUCourses = async ({}) => {
   const courses = await getDocs(collection(db, 'hbku_courses'))
 
-  return courses.docs.map(doc => doc.data() as HBKUCourse)
+  return courses.docs.map(doc => doc.data() as HBKUCourseType)
 }
 
-export const updateHBKUCourses = async (courses: HBKUCourse[]) => {
+export const updateHBKUCourses = async (courses: HBKUCourseType[]) => {
   const batch = writeBatch(db)
 
   // Fetch all courses from the database
   const allCoursesSnapshot = await getDocs(collection(db, 'hbku_courses'))
-  const allCourses = allCoursesSnapshot.docs.map(doc => doc.data() as HBKUCourse)
+  const allCourses = allCoursesSnapshot.docs.map(doc => doc.data() as HBKUCourseType)
 
   // Update or add courses
   courses.forEach(course => {
