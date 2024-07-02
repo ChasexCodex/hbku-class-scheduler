@@ -4,14 +4,13 @@ import Loading from "@/components/Loading";
 import {HBKUCourseType} from "@/types";
 import {useEffect, useState} from "react";
 import HBKUCourse from "@/components/HBKUCourse";
+import {submitForm, idify} from "@/utils/form";
 
-function idify<T>(e: T) {
-  return {...e, id: Math.random()}
-}
+type CourseEntry = HBKUCourseType & { id: number }
 
 const Courses = () => {
   const {data, isLoading, error, update} = useHBKUCourses();
-  const [courses, setCourses] = useState(data?.map(idify) || []);
+  const [courses, setCourses] = useState<CourseEntry[]>([]);
 
   useEffect(() => {
     if (isLoading || !data || courses.length > 0) return;
@@ -45,12 +44,8 @@ const Courses = () => {
     setCourses(courses.filter((_, i) => i !== index))
   }
 
-  const handleSubmit = async (e: any) => {
-    e.preventDefault()
-
+  const handleSubmit = async (formData: FormData) => {
     console.log('submitting')
-
-    const formData = new FormData(e.target)
 
     const data = {
       crn: formData.getAll('crn[]') as string[],
@@ -73,13 +68,13 @@ const Courses = () => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={submitForm(handleSubmit)}>
         <div className="grid grid-cols-2 gap-4">
           {
             courses.map((course, i) => (
               <HBKUCourse key={course.id} remove={() => handleRemoveCourse(i)}
-                      updateCourse={(updatedCourse) => updateCourse(i, {...updatedCourse, id: course.id})}
-                      data={course}/>
+                          updateCourse={(updatedCourse) => updateCourse(i, {...updatedCourse, id: course.id})}
+                          data={course}/>
             ))
           }
         </div>

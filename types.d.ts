@@ -75,3 +75,5 @@ export type HBKUCourseType = {
   title: string
   instructor: string[]
 }
+
+export type Promiseable<T> = T | Promise<T>
