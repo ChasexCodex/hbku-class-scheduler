@@ -10,8 +10,8 @@ const days: Partial<keyof JsonClob>[] = [
   'SSRMEET_SAT_DAY',
 ]
 
-export const getDistinctCoursesList = (students: StudentData[]): string[] => {
-  return [...Array.from(new Set(students.flatMap(student => student.texas_courses)))]
+export const getDistinctCoursesList = (students: StudentData[], year: number = 1): string[] => {
+  return [...Array.from(new Set(students.filter(e => e.year === `${year}`).flatMap(student => student.texas_courses)))]
 }
 
 // time in HH:MM AM/PM format
