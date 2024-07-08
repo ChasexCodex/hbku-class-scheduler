@@ -46,10 +46,10 @@ export const getLectureTimings = (crns: string[], howdyCourses: SWVEntry[]): Lec
 
   const lectures = courses.flatMap(e => {
     if (!e || !e.SWV_CLASS_SEARCH_JSON_CLOB) return []
-    if (typeof e.SWV_CLASS_SEARCH_JSON_CLOB === 'string') {
-      return JSON.parse(e.SWV_CLASS_SEARCH_JSON_CLOB) as JsonClob
-    }
-    return e.SWV_CLASS_SEARCH_JSON_CLOB
+    const clobs = typeof e.SWV_CLASS_SEARCH_JSON_CLOB === 'string'
+      ? JSON.parse(e.SWV_CLASS_SEARCH_JSON_CLOB) as JsonClob[]
+      : e.SWV_CLASS_SEARCH_JSON_CLOB
+    return clobs.map(clob => ({...clob, crn: e.SWV_CLASS_SEARCH_CRN}))
   })
     .filter(e => !!e.SSRMEET_BEGIN_TIME && !!e.SSRMEET_END_TIME)
 
@@ -57,6 +57,7 @@ export const getLectureTimings = (crns: string[], howdyCourses: SWVEntry[]): Lec
     start: toMinutes(e.SSRMEET_BEGIN_TIME),
     end: toMinutes(e.SSRMEET_END_TIME),
     day: getLectureDay(e),
+    crn: e.crn,
   }))
 }
 

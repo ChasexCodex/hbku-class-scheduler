@@ -16,6 +16,7 @@ export type LectureTime = {
   day: number
   start: number
   end: number
+  crn: string
 }
 
 interface SWVEntry {

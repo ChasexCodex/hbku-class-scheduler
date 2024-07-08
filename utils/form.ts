@@ -7,3 +7,6 @@ export const submitForm = (callback: (formData: FormData) => Promiseable<void>) 
 }
 
 export const idify = <T>(e: T) => ({...e, id: Math.random()})
+
+export const setState = (setter: (value: any) => void) =>
+  (e: any) => setter(e.target.value);

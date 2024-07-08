@@ -3,9 +3,10 @@ import useStudentData from "@/hooks/useStudentData";
 import Loading from "@/components/Loading";
 import CourseList from "@/components/CourseList";
 import {getHBKUCourseDetails, getTexasCourseDetails} from "@/utils/students";
+import {currentTerm} from "@/utils/const";
 
 function Details() {
-  const {data, isLoading, error, update} = useStudentData('202433')
+  const {data, isLoading, error, update} = useStudentData(currentTerm)
   const {studentData} = data
 
   const handleSubmit = async (e: any) => {

@@ -1,12 +1,38 @@
 import {groupIfOverlap, toTime} from "@/utils/table";
 import {LectureTime} from "@/types";
+import {days} from "@/utils/const";
 
 type Props = {
   timings: LectureTime[]
-  days: string[]
+  onCellHover: (crn: string, enter: boolean) => void
 }
 
-const Table = ({timings, days}: Props) => {
+type CellProps = LectureTime & {
+  onCellHover: (crn: string, enter: boolean) => void
+}
+
+const Cell = ({start, end, crn, onCellHover}: CellProps) => {
+  return (
+    <div className="relative">
+      <div className="absolute left-0 right-0"
+           style={{
+             top: `${(start - 7 * 60) / (13 * 60) * 100}%`,
+             bottom: `${(20 * 60 - end) / (13 * 60) * 100}%`,
+           }}>
+        <div
+          onMouseEnter={() => onCellHover(crn, true)}
+          onMouseLeave={() => onCellHover(crn, false)}
+          className="h-full bg-red-500 text-white text-center rounded-sm text-xs overflow-hidden flex flex-col justify-center pointer-events-auto hover:ring hover:ring-blue-600">
+          <p className="overflow-hidden whitespace-nowrap overflow-ellipsis w-full">
+            {toTime(start)} - {toTime(end)}
+          </p>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+const Table = ({timings, onCellHover}: Props) => {
   return (
     <div className="flex flex-row border">
       <div>
@@ -28,7 +54,7 @@ const Table = ({timings, days}: Props) => {
         <div className="flex-1 grid grid-cols-5">
           {
             days.map((_, day) => (
-              <div key={day} className="border relative">
+              <div key={day} className="border relative pointer-events-none">
                 {
                   groupIfOverlap(timings.filter(e => e.day === day))
                     .map((group, i) => (
@@ -37,21 +63,8 @@ const Table = ({timings, days}: Props) => {
                            style={{
                              gridTemplateColumns: `repeat(${group.length}, minmax(0, 1fr))`,
                            }}>
-                        {group.map(({start, end}, j) => (
-                          <div key={j} className="relative">
-                            <div className="absolute left-0 right-0"
-                                 style={{
-                                   top: `${(start - 7 * 60) / (13 * 60) * 100}%`,
-                                   bottom: `${(20 * 60 - end) / (13 * 60) * 100}%`,
-                                 }}>
-                              <div
-                                className="h-full bg-red-500 text-white text-center rounded-sm text-xs overflow-hidden flex flex-col justify-center">
-                                <p className="overflow-hidden whitespace-nowrap overflow-ellipsis w-full ">
-                                  {toTime(start)} - {toTime(end)}
-                                </p>
-                              </div>
-                            </div>
-                          </div>
+                        {group.map((lectureTime, j) => (
+                          <Cell key={j} {...lectureTime} onCellHover={onCellHover}/>
                         ))}
                       </div>
                     ))
