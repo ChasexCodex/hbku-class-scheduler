@@ -71,10 +71,9 @@ const TablePage = () => {
     <div>
       <h1>Table Page</h1>
       <select value={year} onChange={setState(setYear)}>
-        <option value="1">Freshmen</option>
-        <option value="2">Sophomore</option>
-        <option value="3">Junior</option>
-        <option value="4">Senior</option>
+        {['Freshman', 'Sophomore', 'Junior', 'Senior'].map((e, i) => (
+          <option key={i} value={i + 1}>{e}</option>
+        ))}
       </select>
       <Table
         timings={timings}

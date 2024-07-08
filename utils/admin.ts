@@ -11,3 +11,17 @@ export const getSettings = () => {
 export const updateSettings = async (data: object) => {
   return localStorage.setItem('settings', JSON.stringify(data))
 }
+
+export const getCores = () => {
+  if (typeof window === 'undefined') return []
+
+  const cores = localStorage.getItem('cores')
+
+  if (!cores) return []
+
+  return JSON.parse(cores)
+}
+
+export const updateCores = (data: string[]) => {
+  return localStorage.setItem('cores', JSON.stringify(data))
+}

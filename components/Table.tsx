@@ -9,9 +9,10 @@ type Props = {
 
 type CellProps = LectureTime & {
   onCellHover: (crn: string, enter: boolean) => void
+  isCore: boolean
 }
 
-const Cell = ({start, end, crn, onCellHover}: CellProps) => {
+const Cell = ({start, end, crn, onCellHover, isCore}: CellProps) => {
   return (
     <div className="relative">
       <div className="absolute left-0 right-0"
@@ -22,7 +23,7 @@ const Cell = ({start, end, crn, onCellHover}: CellProps) => {
         <div
           onMouseEnter={() => onCellHover(crn, true)}
           onMouseLeave={() => onCellHover(crn, false)}
-          className="h-full bg-red-500 text-white text-center rounded-sm text-xs overflow-hidden flex flex-col justify-center pointer-events-auto hover:ring hover:ring-blue-600">
+          className={`h-full ${isCore ? 'bg-red-500' : 'bg-green-500'} text-white text-center rounded-sm text-xs overflow-hidden flex flex-col justify-center pointer-events-auto hover:ring hover:ring-blue-600`}>
           <p className="overflow-hidden whitespace-nowrap overflow-ellipsis w-full">
             {toTime(start)} - {toTime(end)}
           </p>

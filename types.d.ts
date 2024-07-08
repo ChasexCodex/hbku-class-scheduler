@@ -17,6 +17,7 @@ export type LectureTime = {
   start: number
   end: number
   crn: string
+  isCore: boolean
 }
 
 interface SWVEntry {

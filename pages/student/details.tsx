@@ -4,14 +4,13 @@ import Loading from "@/components/Loading";
 import CourseList from "@/components/CourseList";
 import {getHBKUCourseDetails, getTexasCourseDetails} from "@/utils/students";
 import {currentTerm} from "@/utils/const";
+import {submitForm} from "@/utils/form";
 
 function Details() {
   const {data, isLoading, error, update} = useStudentData(currentTerm)
   const {studentData} = data
 
-  const handleSubmit = async (e: any) => {
-    e.preventDefault()
-    const formData = new FormData(e.target)
+  const handleSubmit = async (formData: FormData) => {
 
     const data = {
       name: formData.get('name'),
@@ -35,21 +34,22 @@ function Details() {
   return (
     <div>
       <h1>Student Details</h1>
-      <form onSubmit={handleSubmit} className="dark:text-white">
+      <form onSubmit={submitForm(handleSubmit)} className="dark:text-white">
         <input type="text" name="name" placeholder="Name" defaultValue={studentData.name}/>
         <select name="year" defaultValue={studentData.year}>
-          <option value="1">Freshman</option>
-          <option value="2">Sophomore</option>
-          <option value="3">Junior</option>
-          <option value="4">Senior</option>
+          {['Freshman', 'Sophomore', 'Junior', 'Senior'].map((year, i) => (
+            <option key={year} value={i + 1}>{year}</option>
+          ))}
         </select>
         <input type="number" name="uid" defaultValue={studentData.uid}/>
         <br/>
 
         <p className="text-white font-bold">Texas Courses</p>
-        <CourseList courseInfoCallback={(c) => getTexasCourseDetails(c, data.howdy)} courses={studentData.texas_courses} type="texas"/>
+        <CourseList courseInfoCallback={(c) => getTexasCourseDetails(c, data.howdy)} courses={studentData.texas_courses}
+                    type="texas"/>
         <p className="text-white font-bold">HBKU Courses</p>
-        <CourseList courseInfoCallback={(c) => getHBKUCourseDetails(c, data.hbkuCourses)} courses={studentData.hbku_courses} type="hbku"/>
+        <CourseList courseInfoCallback={(c) => getHBKUCourseDetails(c, data.hbkuCourses)}
+                    courses={studentData.hbku_courses} type="hbku"/>
 
         <button type="submit" className="text-white">Update</button>
       </form>

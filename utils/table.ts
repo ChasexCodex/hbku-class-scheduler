@@ -1,4 +1,5 @@
 import {JsonClob, LectureTime, StudentData, SWVEntry} from "@/types";
+import {getCores} from "@/utils/admin";
 
 const days: Partial<keyof JsonClob>[] = [
   'SSRMEET_SUN_DAY',
@@ -58,6 +59,7 @@ export const getLectureTimings = (crns: string[], howdyCourses: SWVEntry[]): Lec
     end: toMinutes(e.SSRMEET_END_TIME),
     day: getLectureDay(e),
     crn: e.crn,
+    isCore: isCore(e.crn, howdyCourses)
   }))
 }
 
@@ -84,4 +86,14 @@ export const groupIfOverlap = (timings: LectureTime[]): LectureTime[][] => {
   groups.push(currentGroup)
 
   return groups
+}
+
+export const isCore = (course: string, howdyCourses: SWVEntry[]): boolean => {
+  const courseData = howdyCourses.find(e => e.SWV_CLASS_SEARCH_CRN === course)
+  if (!courseData) return false
+
+  const cores = getCores()
+  const subject = `${courseData.SWV_CLASS_SEARCH_SUBJECT} ${courseData.SWV_CLASS_SEARCH_COURSE}`
+
+  return cores.includes(subject)
 }
