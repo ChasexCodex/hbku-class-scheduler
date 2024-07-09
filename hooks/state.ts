@@ -1,5 +1,4 @@
-import {useEffect, useState} from "react";
-import {getFromLocalStorage} from "@/utils/admin";
+import {useState} from "react";
 
 export const useArrayState = <T>(initialValue: T[] | (() => T[])) => {
   const [value, setValue] = useState(initialValue);
