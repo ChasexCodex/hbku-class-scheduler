@@ -25,3 +25,15 @@ export const getCores = () => {
 export const updateCores = (data: string[]) => {
   return localStorage.setItem('cores', JSON.stringify(data))
 }
+
+export const saveToLocalStorage = <T extends object>(key: string, data: T | T[]) => {
+  return localStorage.setItem(key, JSON.stringify(data))
+}
+
+export const getFromLocalStorage = <T extends object>(key: string, def: T | null = null) => {
+  const data = localStorage.getItem('data')
+
+  if (!data) return def
+
+  return JSON.parse(data) as T | T[]
+}

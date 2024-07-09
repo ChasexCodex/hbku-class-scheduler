@@ -1,4 +1,5 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import {getFromLocalStorage} from "@/utils/admin";
 
 export const useArrayState = <T>(initialValue: T[] | (() => T[])) => {
   const [value, setValue] = useState(initialValue);
@@ -13,7 +14,7 @@ export const useObjectState = <T extends object>(initialState: T | (() => T)) =>
   const [state, setState] = useState(initialState);
 
   const updateField = <F extends keyof T>(field: F, value: T[F]) => {
-    setState(prevState => ({ ...prevState, [field]: value }));
+    setState(prevState => ({...prevState, [field]: value}));
   };
 
   return {state, updateField};
