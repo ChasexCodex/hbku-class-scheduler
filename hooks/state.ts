@@ -1,10 +1,22 @@
 import {useState} from "react";
 
-export const useArrayState = <T>(initialValue: T[] | (() => T[])) => {
+export const useArrayState = <T>(initialValue: T[] | (() => T[]) = []) => {
   const [value, setValue] = useState(initialValue);
-  const add = (item: T) => setValue([...value, item]);
-  const remove = (index: number) => setValue(value.filter((_, i) => i !== index));
-  const update = (updatedItem: T, index: number) => setValue(value.map((item, i) => index === i ? updatedItem : item));
+  const add = (item: T) => {
+    const next = [...value, item]
+    setValue(next);
+    return next
+  }
+  const remove = (index: number) => {
+    const next = value.filter((_, i) => i !== index)
+    setValue(next)
+    return next
+  }
+  const update = (updatedItem: T, index: number) => {
+    const next= value.map((item, i) => index === i ? updatedItem : item)
+    setValue(next);
+    return next
+  }
 
   return {value, setValue, add, remove, update}
 }
