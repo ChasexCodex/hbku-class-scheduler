@@ -1,7 +1,7 @@
-import {initializeApp} from "firebase/app";
-import {getFirestore, connectFirestoreEmulator} from "firebase/firestore";
-import {getAuth, connectAuthEmulator} from "firebase/auth";
-import config from "@/utils/config";
+import {initializeApp} from 'firebase/app'
+import {getFirestore, connectFirestoreEmulator} from 'firebase/firestore'
+import {getAuth, connectAuthEmulator} from 'firebase/auth'
+import config from '@/utils/config'
 
 const firebaseConfig = config('firebase')
 

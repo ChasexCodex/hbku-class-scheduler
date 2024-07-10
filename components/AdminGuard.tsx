@@ -1,8 +1,8 @@
-import {ComponentType, useEffect, useState} from "react";
-import {useRouter} from "next/router";
-import Loading from "@/components/Loading";
-import AuthGuard from "@/components/AuthGuard";
-import useAdmin from "@/hooks/useAdmin";
+import {ComponentType, useEffect} from 'react'
+import {useRouter} from 'next/router'
+import Loading from '@/components/Loading'
+import AuthGuard from '@/components/AuthGuard'
+import useAdmin from '@/hooks/useAdmin'
 
 const dashboardRoute = '/student/dashboard'
 
@@ -21,11 +21,11 @@ const AdminGuard = (WrappedComponent: ComponentType) => {
           router.push(dashboardRoute)
         }
 
-      }, [loading, admin, router]);
+      }, [loading, admin, router])
 
       return loading ? <Loading/> : <WrappedComponent {...props}/>
     })
 }
 
 
-export default AdminGuard;
+export default AdminGuard

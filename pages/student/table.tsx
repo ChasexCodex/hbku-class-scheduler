@@ -1,21 +1,21 @@
-import AdminGuard from "@/components/AdminGuard";
-import useCourses from "@/hooks/useCourses";
-import {getDistinctCoursesList, getLectureTimings} from "@/utils/table";
-import Table from "@/components/Table";
-import {useState} from "react";
-import {getHBKUCourseDetails, getTexasCourseDetails} from "@/utils/students";
-import {currentTerm, years} from "@/utils/const";
-import {setState} from "@/utils/form";
-import CourseCheckbox from "@/components/CourseCheckbox";
-import CourseDetails from "@/components/CourseDetails";
-import {useArrayState, useObjectState} from "@/hooks/state";
-import {load, save} from "@/utils/storage";
-import {HBKUCourseType, HBKUTiming, HBKUTimingsState} from "@/types";
-import _ from "lodash";
-import SWRSuspense from "@/components/SWRSuspense";
+import AdminGuard from '@/components/AdminGuard'
+import useCourses from '@/hooks/useCourses'
+import {getDistinctCoursesList, getLectureTimings} from '@/utils/table'
+import Table from '@/components/Table'
+import {useState} from 'react'
+import {getHBKUCourseDetails, getTexasCourseDetails} from '@/utils/students'
+import {currentTerm, years} from '@/utils/const'
+import {setState} from '@/utils/form'
+import CourseCheckbox from '@/components/CourseCheckbox'
+import CourseDetails from '@/components/CourseDetails'
+import {useArrayState, useObjectState} from '@/hooks/state'
+import {load, save} from '@/utils/storage'
+import {HBKUCourseType, HBKUTiming, HBKUTimingsState} from '@/types'
+import _ from 'lodash'
+import SWRSuspense from '@/components/SWRSuspense'
 
 const TablePage = () => {
-  const {data} = useCourses(currentTerm);
+  const {data} = useCourses(currentTerm)
   const [year, setYear] = useState(3)
   const [hoveredCell, setHoveredCell] = useState<string>()
   const hbkuTimings = useObjectState<HBKUTimingsState>(() => {
@@ -51,7 +51,7 @@ const TablePage = () => {
   }
 
   const handleAddHBKUTiming = (crn: string) => () => {
-    const timings = _.concat(hbkuTimings.value[crn], {start: '08:00', end: '08:00', day: 0});
+    const timings = _.concat(hbkuTimings.value[crn], {start: '08:00', end: '08:00', day: 0})
     hbkuTimings.updateField(crn, timings, (newState) => save<HBKUTimingsState>('hbkuTimings', newState))
   }
 
@@ -140,7 +140,7 @@ const TablePage = () => {
         </div>
       </div>
     </SWRSuspense>
-  );
+  )
 }
 
-export default AdminGuard(TablePage);
+export default AdminGuard(TablePage)

@@ -14,4 +14,4 @@ const CourseCheckbox = ({course, details, selected, onChange}: Props) => {
   )
 }
 
-export default CourseCheckbox;
+export default CourseCheckbox

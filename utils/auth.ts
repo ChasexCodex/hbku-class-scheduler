@@ -1,6 +1,6 @@
-import {signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut} from "@firebase/auth";
-import {auth} from "@/utils/firebase";
-import {createStudentData} from "@/utils/students";
+import {signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut} from '@firebase/auth'
+import {auth} from '@/utils/firebase'
+import {createStudentData} from '@/utils/students'
 
 export const login = async (data: FormData) => {
   const email = data.get('email') as string

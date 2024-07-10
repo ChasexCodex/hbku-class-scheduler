@@ -1,6 +1,6 @@
-import {groupIfOverlap, toMinutes, toTime} from "@/utils/table";
-import {HBKUTimingsState, LectureTime, MappedTiming} from "@/types";
-import {days} from "@/utils/const";
+import {groupIfOverlap, toMinutes, toTime} from '@/utils/table'
+import {HBKUTimingsState, LectureTime, MappedTiming} from '@/types'
+import {days} from '@/utils/const'
 
 type Props = {
   texasTimings: LectureTime[],
@@ -95,4 +95,4 @@ const Table = ({texasTimings, hbkuTimings, onCellHover}: Props) => {
   )
 }
 
-export default Table;
+export default Table

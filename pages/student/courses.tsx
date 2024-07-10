@@ -1,15 +1,15 @@
-import AdminGuard from "@/components/AdminGuard";
-import useHBKUCourses from "@/hooks/useHBKUCourses";
-import {HBKUCourseType} from "@/types";
-import {useState} from "react";
-import HBKUCourse from "@/components/HBKUCourse";
-import {submitForm, idify} from "@/utils/form";
+import AdminGuard from '@/components/AdminGuard'
+import useHBKUCourses from '@/hooks/useHBKUCourses'
+import {HBKUCourseType} from '@/types'
+import {useState} from 'react'
+import HBKUCourse from '@/components/HBKUCourse'
+import {submitForm, idify} from '@/utils/form'
 
 type CourseEntry = HBKUCourseType & { id: number }
 
 const Courses = () => {
-  const {data, update} = useHBKUCourses();
-  const [courses, setCourses] = useState<CourseEntry[]>(data!.map(idify));
+  const {data, update} = useHBKUCourses()
+  const [courses, setCourses] = useState<CourseEntry[]>(data!.map(idify))
 
   const handleAddCourse = () => {
     setCourses([...courses, {
@@ -17,7 +17,7 @@ const Courses = () => {
       title: '',
       name: '',
       instructor: [''],
-      id: Math.random()
+      id: Math.random(),
     }])
   }
 

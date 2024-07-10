@@ -1,10 +1,10 @@
-import Link from "next/link";
-import {logout} from "@/utils/auth";
-import AuthGuard from "@/components/AuthGuard";
-import useAdmin from "@/hooks/useAdmin";
-import UserLayout from "@/layouts/UserLayout";
-import {PageWithLayout} from "@/types";
-import ThemeSwitch from "@/components/ThemeSwitch";
+import Link from 'next/link'
+import {logout} from '@/utils/auth'
+import AuthGuard from '@/components/AuthGuard'
+import useAdmin from '@/hooks/useAdmin'
+import UserLayout from '@/layouts/UserLayout'
+import {PageWithLayout} from '@/types'
+import ThemeSwitch from '@/components/ThemeSwitch'
 
 
 function StudentDashboard() {

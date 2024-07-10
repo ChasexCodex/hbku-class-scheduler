@@ -1,10 +1,10 @@
-import {doc, getDoc, getDocs, setDoc, updateDoc, collection, writeBatch} from "@firebase/firestore";
-import {db} from "@/utils/firebase";
-import {HBKUCourseType, StudentData, SWVEntry} from "@/types";
+import {doc, getDoc, getDocs, setDoc, updateDoc, collection, writeBatch} from '@firebase/firestore'
+import {db} from '@/utils/firebase'
+import {HBKUCourseType, StudentData, SWVEntry} from '@/types'
 
 export const getStudentData = async (uid: string) => {
   const d = doc(db, 'students', uid)
-  const snapshot = await getDoc(d);
+  const snapshot = await getDoc(d)
 
   if (!snapshot.exists()) {
     throw new Error('Student data not found')
@@ -26,7 +26,7 @@ export const updateStudentData = async (uid: string, data: object) => {
       return ({
         success: false,
         error: e,
-      });
+      })
     })
 }
 
@@ -43,7 +43,7 @@ export const createStudentData = async (uid: string, data: object) => {
       return ({
         success: false,
         error: e,
-      });
+      })
     })
 }
 
@@ -99,11 +99,11 @@ export const getAllTexasCourses = (term: string) => async (url: string) => {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify({
-      "startRow": 0,
-      "endRow": 0,
-      "termCode": term,
-      "publicSearch": "Y"
-    })
+      'startRow': 0,
+      'endRow': 0,
+      'termCode': term,
+      'publicSearch': 'Y',
+    }),
   })
 
   return await res.json()
@@ -117,7 +117,7 @@ export const getHBKUCourseDetails = (crn: string, hbkuCourses: HBKUCourseType[])
   return {
     name: course.name,
     title: course.title,
-    instructor: course.instructor
+    instructor: course.instructor,
   }
 }
 

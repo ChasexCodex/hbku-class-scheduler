@@ -1,7 +1,7 @@
-import UserLayout from "@/layouts/UserLayout";
-import {Inter} from "next/font/google";
+import UserLayout from '@/layouts/UserLayout'
+import {Inter} from 'next/font/google'
 
-const inter = Inter({subsets: ["latin"]});
+const inter = Inter({subsets: ['latin']})
 
 export default function Home() {
   return (
@@ -11,4 +11,4 @@ export default function Home() {
   )
 }
 
-Home.layout = UserLayout;
+Home.layout = UserLayout

@@ -1,5 +1,5 @@
-import {getHBKUCourseDetails, getTexasCourseDetails} from "@/utils/students";
-import {HBKUCourseType, SWVEntry} from "@/types";
+import {getHBKUCourseDetails, getTexasCourseDetails} from '@/utils/students'
+import {HBKUCourseType, SWVEntry} from '@/types'
 
 type Props = {
   hoveredCell?: string,

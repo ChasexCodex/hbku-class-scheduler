@@ -1,15 +1,14 @@
-import "@/styles/globals.css";
-import type {AppProps} from "next/app";
-import {ComponentType, ReactNode} from "react";
-import {AuthProvider} from "@/hooks/AuthContext";
-import {ThemeProvider} from "next-themes";
-import {SWRConfig} from "swr";
-import {localStorageProvider} from "@/utils/swr";
-import ErrorBoundary from "@/components/ErrorBoundary";
+import '@/styles/globals.css'
+import type {AppProps} from 'next/app'
+import {ComponentType, ReactNode} from 'react'
+import {AuthProvider} from '@/hooks/AuthContext'
+import {ThemeProvider} from 'next-themes'
+import ErrorBoundary from '@/components/ErrorBoundary'
+import SWRConfiguration from '@/components/SWRConfiguration'
 
 type Props = {
-  Component: AppProps["Component"] & { layout?: ComponentType }
-  pageProps: AppProps["pageProps"]
+  Component: AppProps['Component'] & { layout?: ComponentType }
+  pageProps: AppProps['pageProps']
 }
 
 const defaultLayout = ({children}: { children: ReactNode }) => (
@@ -19,18 +18,18 @@ const defaultLayout = ({children}: { children: ReactNode }) => (
 )
 
 export default function App({Component, pageProps}: Props) {
-  const Layout = Component.layout || defaultLayout;
+  const Layout = Component.layout || defaultLayout
   return (
     <ErrorBoundary>
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
         <AuthProvider>
-          <SWRConfig value={{provider: localStorageProvider, suspense: true}}>
+          <SWRConfiguration>
             <Layout>
               <Component {...pageProps} />
             </Layout>
-          </SWRConfig>
+          </SWRConfiguration>
         </AuthProvider>
       </ThemeProvider>
     </ErrorBoundary>
-  );
+  )
 }

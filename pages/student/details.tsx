@@ -1,10 +1,10 @@
-import AuthGuard from "@/components/AuthGuard";
-import useStudentData from "@/hooks/useStudentData";
-import CourseList from "@/components/CourseList";
-import {getHBKUCourseDetails, getTexasCourseDetails} from "@/utils/students";
-import {currentTerm} from "@/utils/const";
-import {submitForm} from "@/utils/form";
-import SWRSuspense from "@/components/SWRSuspense";
+import AuthGuard from '@/components/AuthGuard'
+import useStudentData from '@/hooks/useStudentData'
+import CourseList from '@/components/CourseList'
+import {getHBKUCourseDetails, getTexasCourseDetails} from '@/utils/students'
+import {currentTerm} from '@/utils/const'
+import {submitForm} from '@/utils/form'
+import SWRSuspense from '@/components/SWRSuspense'
 
 function Details() {
   const {data, update} = useStudentData(currentTerm)

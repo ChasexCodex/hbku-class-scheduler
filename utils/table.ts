@@ -1,15 +1,6 @@
-import {JsonClob, LectureTime, StudentData, SWVEntry, Timing} from "@/types";
-import {load} from "@/utils/storage";
-
-const days: Partial<keyof JsonClob>[] = [
-  'SSRMEET_SUN_DAY',
-  'SSRMEET_MON_DAY',
-  'SSRMEET_TUE_DAY',
-  'SSRMEET_WED_DAY',
-  'SSRMEET_THU_DAY',
-  'SSRMEET_FRI_DAY',
-  'SSRMEET_SAT_DAY',
-]
+import {JsonClob, LectureTime, StudentData, SWVEntry, Timing} from '@/types'
+import {load} from '@/utils/storage'
+import {SWVDays} from '@/utils/const'
 
 export const getDistinctCoursesList = (students: StudentData[], year: number = 1): string[] => {
   return [...Array.from(new Set(students.filter(e => e.year === `${year}`).flatMap(student => student.texas_courses)))]
@@ -19,7 +10,7 @@ export const getDistinctCoursesList = (students: StudentData[], year: number = 1
 export const toMinutes = (s: string) => {
   const hours = parseInt(s.slice(0, 2))
   const minutes = parseInt(s.slice(3, 5))
-  const shift = (s.endsWith("PM") && hours !== 12) ? 12 : 0
+  const shift = (s.endsWith('PM') && hours !== 12) ? 12 : 0
 
   return minutes + 60 * (hours + shift)
 }
@@ -33,12 +24,12 @@ export const toTime = (minutes: number) => {
 }
 
 const getLectureDay = (lecture: JsonClob): number => {
-  const swvDay = days.find(e => lecture[e])
+  const swvDay = SWVDays.find(e => lecture[e])
   if (!swvDay) {
     throw new Error('No day found')
   }
 
-  return days.indexOf(swvDay)
+  return SWVDays.indexOf(swvDay)
 }
 
 export const getLectureTimings = (crns: string[], howdyCourses: SWVEntry[]): LectureTime[] => {
@@ -59,7 +50,7 @@ export const getLectureTimings = (crns: string[], howdyCourses: SWVEntry[]): Lec
     end: toMinutes(e.SSRMEET_END_TIME),
     day: getLectureDay(e),
     crn: e.crn,
-    isCore: isCore(e.crn, howdyCourses)
+    isCore: isCore(e.crn, howdyCourses),
   }))
 }
 

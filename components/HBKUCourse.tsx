@@ -1,4 +1,4 @@
-import {HBKUCourseType} from "@/types";
+import {HBKUCourseType} from '@/types'
 
 type Props = {
   initialData: HBKUCourseType

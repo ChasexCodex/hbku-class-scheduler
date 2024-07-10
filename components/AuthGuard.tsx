@@ -1,7 +1,7 @@
-import {ComponentType, useEffect} from "react";
-import {useAuth} from "@/hooks/AuthContext";
-import {useRouter} from "next/router";
-import Loading from "@/components/Loading";
+import {ComponentType, useEffect} from 'react'
+import {useAuth} from '@/hooks/AuthContext'
+import {useRouter} from 'next/router'
+import Loading from '@/components/Loading'
 
 const loginRoute = '/student/login'
 const dashboardRoute = '/student/dashboard'
@@ -26,11 +26,11 @@ const AuthGuard = (WrappedComponent: ComponentType, optionalAuth?: boolean) => {
         return
       }
 
-    }, [loading, user, router]);
+    }, [loading, user, router])
 
     return loading ? <Loading/> : <WrappedComponent {...props}/>
   }
 }
 
 
-export default AuthGuard;
+export default AuthGuard

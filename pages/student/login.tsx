@@ -1,10 +1,10 @@
-import {Inter} from "next/font/google";
-import {useState} from "react";
-import {useRouter} from "next/router";
-import {login, signup} from "@/utils/auth";
-import AuthGuard from "@/components/AuthGuard";
+import {Inter} from 'next/font/google'
+import {useState} from 'react'
+import {useRouter} from 'next/router'
+import {login, signup} from '@/utils/auth'
+import AuthGuard from '@/components/AuthGuard'
 
-const inter = Inter({subsets: ["latin"]});
+const inter = Inter({subsets: ['latin']})
 
 function LoginPage() {
   const router = useRouter()
@@ -14,7 +14,7 @@ function LoginPage() {
   const handleSubmit = async (e: any) => {
     e.preventDefault()
 
-    const formData = new FormData(e.target);
+    const formData = new FormData(e.target)
 
     if (newUser && formData.get('password') !== formData.get('confirm-password')) {
       return setError('Passwords do not match')
@@ -98,7 +98,7 @@ function LoginPage() {
         {error &&
           <div className="relative bg-red-500 col-span-5 rounded">
             <button className="absolute top-0 right-2">
-            x
+              x
             </button>
             <p className="font-bold text-white p-2 mt-4">
               {error}

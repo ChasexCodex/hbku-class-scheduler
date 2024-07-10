@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useState} from 'react'
 
 type Props = {
   courses: string[]
@@ -12,21 +12,21 @@ type Props = {
 }
 
 const CourseList = ({courses: data, courseInfoCallback, type}: Props) => {
-  const [courses, setCourses] = useState(data || []);
+  const [courses, setCourses] = useState(data || [])
 
   const handleAddCourse = () => {
-    setCourses([...courses, '']);
-  };
+    setCourses([...courses, ''])
+  }
 
   const handleRemoveCourse = (index: number) => {
-    setCourses(courses.filter((_, i) => i !== index));
-  };
+    setCourses(courses.filter((_, i) => i !== index))
+  }
 
   const handleChangeCourse = (index: number, value: string) => {
-    const newCourses = courses.slice();
-    newCourses[index] = value;
-    setCourses(newCourses);
-  };
+    const newCourses = courses.slice()
+    newCourses[index] = value
+    setCourses(newCourses)
+  }
 
   return (
     <div>
@@ -59,7 +59,7 @@ const CourseList = ({courses: data, courseInfoCallback, type}: Props) => {
         Add Course
       </button>
     </div>
-  );
-};
+  )
+}
 
-export default CourseList;
+export default CourseList

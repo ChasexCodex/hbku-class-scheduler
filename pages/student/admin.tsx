@@ -1,7 +1,7 @@
-import {handle, submitForm} from "@/utils/form";
-import {save, load} from "@/utils/storage";
-import {useArrayState} from "@/hooks/state";
-import {useEffect} from "react";
+import {handle, submitForm} from '@/utils/form'
+import {save, load} from '@/utils/storage'
+import {useArrayState} from '@/hooks/state'
+import {useEffect} from 'react'
 
 const AdminPage = () => {
   const {value: cores, setValue: setCores, add, remove, update} = useArrayState<string>()
@@ -9,7 +9,7 @@ const AdminPage = () => {
   useEffect(() => {
     setCores(load('cores', []))
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [])
 
   const updateSave = (index: number) => (value: string) => {
     save('cores', update(value, index))
