@@ -1,30 +1,15 @@
 import AdminGuard from "@/components/AdminGuard";
 import useHBKUCourses from "@/hooks/useHBKUCourses";
-import Loading from "@/components/Loading";
 import {HBKUCourseType} from "@/types";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import HBKUCourse from "@/components/HBKUCourse";
 import {submitForm, idify} from "@/utils/form";
 
 type CourseEntry = HBKUCourseType & { id: number }
 
 const Courses = () => {
-  const {data, isLoading, error, update} = useHBKUCourses();
-  const [courses, setCourses] = useState<CourseEntry[]>([]);
-
-  useEffect(() => {
-    if (isLoading || !data || courses.length > 0) return;
-
-    setCourses(data.map(idify));
-  }, [isLoading, data, courses.length]);
-
-  if (isLoading) {
-    return <Loading/>
-  }
-
-  if (error) {
-    return <div>Error: {JSON.stringify(error)}</div>
-  }
+  const {data, update} = useHBKUCourses();
+  const [courses, setCourses] = useState<CourseEntry[]>(data!.map(idify));
 
   const handleAddCourse = () => {
     setCourses([...courses, {

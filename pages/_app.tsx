@@ -5,6 +5,7 @@ import {AuthProvider} from "@/hooks/AuthContext";
 import {ThemeProvider} from "next-themes";
 import {SWRConfig} from "swr";
 import {localStorageProvider} from "@/utils/swr";
+import ErrorBoundary from "@/components/ErrorBoundary";
 
 type Props = {
   Component: AppProps["Component"] & { layout?: ComponentType }
@@ -20,14 +21,16 @@ const defaultLayout = ({children}: { children: ReactNode }) => (
 export default function App({Component, pageProps}: Props) {
   const Layout = Component.layout || defaultLayout;
   return (
-    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-      <AuthProvider>
-        <SWRConfig value={{provider: localStorageProvider}}>
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
-        </SWRConfig>
-      </AuthProvider>
-    </ThemeProvider>
+    <ErrorBoundary>
+      <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <AuthProvider>
+          <SWRConfig value={{provider: localStorageProvider, suspense: true}}>
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          </SWRConfig>
+        </AuthProvider>
+      </ThemeProvider>
+    </ErrorBoundary>
   );
 }
