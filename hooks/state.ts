@@ -1,32 +1,30 @@
 import {useState} from "react";
+import _ from "lodash";
+
+const stateOperation = <T>(setValue: (value: T) => void, newValue: T) => {
+  setValue(newValue)
+  return newValue
+}
 
 export const useArrayState = <T>(initialValue: T[] | (() => T[]) = []) => {
   const [value, setValue] = useState(initialValue);
-  const add = (item: T) => {
-    const next = [...value, item]
-    setValue(next);
-    return next
-  }
-  const remove = (index: number) => {
-    const next = value.filter((_, i) => i !== index)
-    setValue(next)
-    return next
-  }
-  const update = (updatedItem: T, index: number) => {
-    const next= value.map((item, i) => index === i ? updatedItem : item)
-    setValue(next);
-    return next
-  }
+  const add = (item: T) => stateOperation(setValue, _.concat(value, item))
+  const remove = (index: number) => stateOperation(setValue, _.remove(value, (_, i) => i === index))
+  const update = (updatedItem: T, index: number) => stateOperation(setValue, _.set(value, index, updatedItem))
 
   return {value, setValue, add, remove, update}
 }
 
 export const useObjectState = <T extends object>(initialState: T | (() => T)) => {
-  const [state, setState] = useState(initialState);
+  const [value, setValue] = useState(initialState);
 
-  const updateField = <F extends keyof T>(field: F, value: T[F]) => {
-    setState(prevState => ({...prevState, [field]: value}));
+  const updateField = <F extends keyof T>(field: F, value: T[F], callback?: (newState: T) => void) => {
+    setValue(prevState => {
+      const newState = {...prevState, [field]: value};
+      if (callback) callback(newState);
+      return newState;
+    });
   };
 
-  return {state, updateField};
+  return {value, setValue, updateField};
 };

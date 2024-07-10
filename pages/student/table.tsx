@@ -3,44 +3,45 @@ import useCourses from "@/hooks/useCourses";
 import Loading from "@/components/Loading";
 import {getDistinctCoursesList, getLectureTimings} from "@/utils/table";
 import Table from "@/components/Table";
-import {useEffect, useMemo, useState} from "react";
-import {getTexasCourseDetails} from "@/utils/students";
-import {currentTerm} from "@/utils/const";
+import {useEffect, useState} from "react";
+import {getHBKUCourseDetails, getTexasCourseDetails} from "@/utils/students";
+import {currentTerm, years} from "@/utils/const";
 import {setState} from "@/utils/form";
-import {SWVEntry} from "@/types";
+import CourseCheckbox from "@/components/CourseCheckbox";
+import CourseDetails from "@/components/CourseDetails";
+import {useArrayState, useObjectState} from "@/hooks/state";
+import {load, save} from "@/utils/storage";
+import {HBKUCourseType} from "@/types";
+import _ from "lodash";
 
-type CourseCheckboxProps = {
-  course: string
-  details: any
-  selected: boolean
-  onChange: () => void
-  howdy: SWVEntry[]
+type HBKUTimings = {
+  start: string
+  end: string
+  day: number
 }
 
-const CourseCheckbox = ({course, details, selected, onChange}: CourseCheckboxProps) => {
-  return (details &&
-    <div>
-      <input type="checkbox" name={course} checked={selected} onChange={onChange}/>
-      <label htmlFor={course}>{details.name} - {details.section} ({details.title})</label>
-    </div>
-  )
+type HBKUTimingsState = {
+  [key: string]: HBKUTimings[]
 }
 
 const TablePage = () => {
   const {data, isLoading, error} = useCourses(currentTerm);
   const [year, setYear] = useState(3)
-  const [hoveredCell, setHoveredCell] = useState<string | null>(null)
-  const crns = useMemo(() => {
-    if (!data || !data.studentsCourses) return []
+  const [hoveredCell, setHoveredCell] = useState<string>()
+  const hbkuTimings = useObjectState<HBKUTimingsState>({})
 
-    return getDistinctCoursesList(data.studentsCourses, year)
-  }, [data, year])
-  const [coursesSelection, setCoursesSelection] = useState<{ [p: string]: boolean }>({})
+  const crns = (data && data.studentsCourses) ? getDistinctCoursesList(data.studentsCourses, year) : []
+  const coursesSelection = useArrayState(crns)
 
   useEffect(() => {
-    setCoursesSelection(Object.fromEntries(crns.map(e => [e, true])))
+    if (isLoading) return
+
+    const savedTimings = load<HBKUTimingsState>('hbkuTimings', {})
+    const s = data.hbkuCourses.flatMap((e: HBKUCourseType) => e.crn)
+    const timings = Object.fromEntries(s.map((e: string) => [e, savedTimings[e] || []]))
+    hbkuTimings.setValue(timings)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [crns.length]);
+  }, [isLoading]);
 
 
   if (isLoading) {
@@ -48,30 +49,42 @@ const TablePage = () => {
   }
 
   if (error) {
-    return <div>Error: {error}</div>
+    return <div>Error: {JSON.stringify(error)}</div>
   }
 
+  const timings = getLectureTimings(coursesSelection.value, data.howdy)
 
-  const filteredCRNS = Object
-    .entries(coursesSelection)
-    .filter(([, on]) => on)
-    .map(([e,]) => e)
-    .map(e => e)
-  const timings = getLectureTimings(filteredCRNS, data.howdy)
+  const hbkuCRNS = data.studentsCourses.flatMap((e: any) => e.hbku_courses)
 
   const handleSelectionChange = (course: string) => {
-    setCoursesSelection(prev => ({...prev, [course]: !prev[course]}))
+    if (coursesSelection.value.includes(course)) {
+      const index = coursesSelection.value.indexOf(course)
+      coursesSelection.remove(index)
+    } else {
+      coursesSelection.add(course)
+    }
   }
 
   const handleCellHover = (crn: string, enter: boolean) => {
-    setHoveredCell(enter ? crn : null)
+    setHoveredCell(enter ? crn : undefined)
+  }
+
+  function handleHBKUTimingsChange<K extends keyof HBKUTimings>(crn: string, index: number, key: K, value: HBKUTimings[K]) {
+    const timings = _.cloneDeep(hbkuTimings.value[crn])
+    timings[index][key] = value
+    hbkuTimings.updateField(crn, timings, (newState) => save<HBKUTimingsState>('hbkuTimings', newState))
+  }
+
+  const handleAddHBKUTiming = (crn: string) => () => {
+    const timings = _.concat(hbkuTimings.value[crn], {start: '08:00', end: '08:00', day: 0});
+    hbkuTimings.updateField(crn, timings, (newState) => save<HBKUTimingsState>('hbkuTimings', newState))
   }
 
   return (
     <div>
       <h1>Table Page</h1>
       <select value={year} onChange={setState(setYear)}>
-        {['Freshman', 'Sophomore', 'Junior', 'Senior'].map((e, i) => (
+        {years.map((e, i) => (
           <option key={i} value={i + 1}>{e}</option>
         ))}
       </select>
@@ -79,35 +92,73 @@ const TablePage = () => {
         timings={timings}
         onCellHover={handleCellHover}
       />
-      <div className="grid grid-cols-2">
+      <div className="grid grid-cols-3">
         <div>
           {
-            Object.entries(coursesSelection).map(([course, selected]) => (
+            crns.map(course => (
               <CourseCheckbox
                 key={course}
                 course={course}
-                selected={selected}
+                selected={coursesSelection.value.includes(course)}
                 details={getTexasCourseDetails(course, data.howdy)}
                 onChange={() => handleSelectionChange(course)}
-                howdy={data.howdy}
               />
             ))
           }
         </div>
         <div>
-          {hoveredCell && (() => {
-            const details = getTexasCourseDetails(hoveredCell, data.howdy)
-
-            return (details &&
-              <div>
-                <h2 className="text-xl font-bold">Course Details</h2>
-                <p>Name: <span>{details.name}</span></p>
-                <p>Section: <span>{details.section}</span></p>
-                <p>Title: <span>{details.title}</span></p>
-                <p>CRN: <span>{hoveredCell}</span></p>
-              </div>
-            )
-          })()}
+          {
+            hbkuCRNS.length ?
+              hbkuCRNS
+                .map((e: string) => ({...getHBKUCourseDetails(e, data.hbkuCourses), crn: e}))
+                .map((e, index) => (e &&
+                  <div key={e.crn}>
+                    <p>{e.name} ({e.title})</p>
+                    {
+                      hbkuTimings.value[e.crn] ?
+                        hbkuTimings.value[e.crn].map((t, i) => (
+                          <div key={i}>
+                            <label className="space-x-2">
+                              <span>Start</span>
+                              <input
+                                type="time"
+                                defaultValue={t.start}
+                                onChange={(event) => handleHBKUTimingsChange(e.crn, i, 'start', event.target.value)}
+                              />
+                            </label>
+                            <label className="space-x-2">
+                              <span>End</span>
+                              <input
+                                type="time"
+                                defaultValue={t.end}
+                                onChange={(event) => handleHBKUTimingsChange(e.crn, i, 'end', event.target.value)}
+                              />
+                            </label>
+                            <label className="space-x-2">
+                              <span>Day</span>
+                              <select
+                                defaultValue={t.day}
+                                onChange={(event) => handleHBKUTimingsChange(e.crn, i, 'day', parseInt(event.target.value))}
+                              >
+                                <option value={0}>Sunday</option>
+                                <option value={1}>Monday</option>
+                                <option value={2}>Tuesday</option>
+                                <option value={3}>Wednesday</option>
+                                <option value={4}>Thursday</option>
+                              </select>
+                            </label>
+                          </div>
+                        )) :
+                        <p>No timings set</p>
+                    }
+                    <button onClick={handleAddHBKUTiming(e.crn)}>Add Timing</button>
+                  </div>
+                )) :
+              <p className="text-white">No HBKU courses listed</p>
+          }
+        </div>
+        <div>
+          <CourseDetails hoveredCell={hoveredCell} howdy={data.howdy}/>
         </div>
       </div>
     </div>

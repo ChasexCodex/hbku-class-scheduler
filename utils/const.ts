@@ -9,3 +9,5 @@ export const days = [
 ]
 
 export const currentTerm = '202433'
+
+export const years = ['Freshman', 'Sophomore', 'Junior', 'Senior']

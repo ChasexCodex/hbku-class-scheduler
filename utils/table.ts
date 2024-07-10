@@ -1,5 +1,5 @@
 import {JsonClob, LectureTime, StudentData, SWVEntry} from "@/types";
-import {getCores} from "@/utils/admin";
+import {load} from "@/utils/storage";
 
 const days: Partial<keyof JsonClob>[] = [
   'SSRMEET_SUN_DAY',
@@ -92,7 +92,7 @@ export const isCore = (course: string, howdyCourses: SWVEntry[]): boolean => {
   const courseData = howdyCourses.find(e => e.SWV_CLASS_SEARCH_CRN === course)
   if (!courseData) return false
 
-  const cores = getCores()
+  const cores = load('cores')
   const subject = `${courseData.SWV_CLASS_SEARCH_SUBJECT} ${courseData.SWV_CLASS_SEARCH_COURSE}`
 
   return cores.includes(subject)
