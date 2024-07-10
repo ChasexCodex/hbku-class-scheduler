@@ -12,10 +12,13 @@ export type StudentData = {
   hbku_courses: string[]
 }
 
-export type LectureTime = {
+export type Timing = {
   day: number
   start: number
   end: number
+}
+
+export type LectureTime = Timing & {
   crn: string
   isCore: boolean
 }
@@ -79,3 +82,18 @@ export type HBKUCourseType = {
 }
 
 export type Promiseable<T> = T | Promise<T>
+
+export type HBKUTiming = {
+  start: string
+  end: string
+  day: number
+}
+
+type HBKUTimingsState = {
+  [key: string]: HBKUTiming[]
+}
+
+type MappedTiming = Timing & {
+  crn: string
+  type: 'texas' | 'hbku'
+}

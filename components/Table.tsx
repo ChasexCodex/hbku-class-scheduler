@@ -1,18 +1,21 @@
-import {groupIfOverlap, toTime} from "@/utils/table";
-import {LectureTime} from "@/types";
+import {groupIfOverlap, toMinutes, toTime} from "@/utils/table";
+import {HBKUTimingsState, LectureTime, MappedTiming} from "@/types";
 import {days} from "@/utils/const";
 
 type Props = {
-  timings: LectureTime[]
-  onCellHover: (crn: string, enter: boolean) => void
+  texasTimings: LectureTime[],
+  onCellHover: (crn: string, enter: boolean) => void,
+  hbkuTimings: HBKUTimingsState
 }
 
-type CellProps = LectureTime & {
+type CellProps = MappedTiming & {
   onCellHover: (crn: string, enter: boolean) => void
-  isCore: boolean
+  isCore?: boolean
 }
 
-const Cell = ({start, end, crn, onCellHover, isCore}: CellProps) => {
+const Cell = ({start, end, crn, type, onCellHover, isCore}: CellProps) => {
+  const color = type === 'texas' ? (isCore ? 'bg-red-500' : 'bg-green-500') : 'bg-blue-500'
+
   return (
     <div className="relative">
       <div className="absolute left-0 right-0"
@@ -23,7 +26,7 @@ const Cell = ({start, end, crn, onCellHover, isCore}: CellProps) => {
         <div
           onMouseEnter={() => onCellHover(crn, true)}
           onMouseLeave={() => onCellHover(crn, false)}
-          className={`h-full ${isCore ? 'bg-red-500' : 'bg-green-500'} text-white text-center rounded-sm text-xs overflow-hidden flex flex-col justify-center pointer-events-auto hover:ring hover:ring-blue-600`}>
+          className={`h-full ${color} text-white text-center rounded-sm text-xs overflow-hidden flex flex-col justify-center pointer-events-auto hover:ring hover:ring-blue-600`}>
           <p className="overflow-hidden whitespace-nowrap overflow-ellipsis w-full">
             {toTime(start)} - {toTime(end)}
           </p>
@@ -33,7 +36,20 @@ const Cell = ({start, end, crn, onCellHover, isCore}: CellProps) => {
   )
 }
 
-const Table = ({timings, onCellHover}: Props) => {
+const Table = ({texasTimings, hbkuTimings, onCellHover}: Props) => {
+  const texasTimingsMapped: MappedTiming[] = texasTimings.map(e => ({...e, type: 'texas'}))
+  const hbkuTimingsMapped = Object
+    .entries(hbkuTimings)
+    .map(([crn, e]) => e.map((e) => ({
+      start: toMinutes(e.start),
+      end: toMinutes(e.end),
+      day: e.day,
+      crn: crn,
+      type: 'hbku',
+    } as MappedTiming))).flat()
+
+  const timings = texasTimingsMapped.concat(hbkuTimingsMapped)
+
   return (
     <div className="flex flex-row border">
       <div>

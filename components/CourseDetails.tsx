@@ -1,15 +1,16 @@
-import {getTexasCourseDetails} from "@/utils/students";
-import {SWVEntry} from "@/types";
+import {getHBKUCourseDetails, getTexasCourseDetails} from "@/utils/students";
+import {HBKUCourseType, SWVEntry} from "@/types";
 
 type Props = {
-  hoveredCell?: string
-  howdy: SWVEntry[]
+  hoveredCell?: string,
+  howdy: SWVEntry[],
+  hbkuCourses: HBKUCourseType[]
 }
 
-const CourseDetails = ({hoveredCell, howdy}: Props) => {
+const CourseDetails = ({hoveredCell, howdy, hbkuCourses}: Props) => {
   if (!hoveredCell) return
 
-  const details = getTexasCourseDetails(hoveredCell, howdy)
+  const details = getTexasCourseDetails(hoveredCell, howdy) || getHBKUCourseDetails(hoveredCell, hbkuCourses)
 
   if (!details) {
     console.log('Course not found', hoveredCell)
@@ -20,7 +21,7 @@ const CourseDetails = ({hoveredCell, howdy}: Props) => {
     <div>
       <h2 className="text-xl font-bold">Course Details</h2>
       <p>Name: <span>{details.name}</span></p>
-      <p>Section: <span>{details.section}</span></p>
+      {'section' in details && <p>Section: <span>{details.section}</span></p>}
       <p>Title: <span>{details.title}</span></p>
       <p>CRN: <span>{hoveredCell}</span></p>
     </div>

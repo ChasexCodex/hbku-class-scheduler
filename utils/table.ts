@@ -1,4 +1,4 @@
-import {JsonClob, LectureTime, StudentData, SWVEntry} from "@/types";
+import {JsonClob, LectureTime, StudentData, SWVEntry, Timing} from "@/types";
 import {load} from "@/utils/storage";
 
 const days: Partial<keyof JsonClob>[] = [
@@ -63,7 +63,7 @@ export const getLectureTimings = (crns: string[], howdyCourses: SWVEntry[]): Lec
   }))
 }
 
-export const groupIfOverlap = (timings: LectureTime[]): LectureTime[][] => {
+export const groupIfOverlap = <T extends Timing>(timings: T[]): T[][] => {
   if (timings.length === 0) return []
 
   const sorted = timings.sort((a, b) => a.start - b.start)

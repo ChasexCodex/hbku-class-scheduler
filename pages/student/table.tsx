@@ -11,18 +11,8 @@ import CourseCheckbox from "@/components/CourseCheckbox";
 import CourseDetails from "@/components/CourseDetails";
 import {useArrayState, useObjectState} from "@/hooks/state";
 import {load, save} from "@/utils/storage";
-import {HBKUCourseType} from "@/types";
+import {HBKUCourseType, HBKUTiming, HBKUTimingsState} from "@/types";
 import _ from "lodash";
-
-type HBKUTimings = {
-  start: string
-  end: string
-  day: number
-}
-
-type HBKUTimingsState = {
-  [key: string]: HBKUTimings[]
-}
 
 const TablePage = () => {
   const {data, isLoading, error} = useCourses(currentTerm);
@@ -69,7 +59,7 @@ const TablePage = () => {
     setHoveredCell(enter ? crn : undefined)
   }
 
-  function handleHBKUTimingsChange<K extends keyof HBKUTimings>(crn: string, index: number, key: K, value: HBKUTimings[K]) {
+  function handleHBKUTimingsChange<K extends keyof HBKUTiming>(crn: string, index: number, key: K, value: HBKUTiming[K]) {
     const timings = _.cloneDeep(hbkuTimings.value[crn])
     timings[index][key] = value
     hbkuTimings.updateField(crn, timings, (newState) => save<HBKUTimingsState>('hbkuTimings', newState))
@@ -89,7 +79,8 @@ const TablePage = () => {
         ))}
       </select>
       <Table
-        timings={timings}
+        texasTimings={timings}
+        hbkuTimings={hbkuTimings.value}
         onCellHover={handleCellHover}
       />
       <div className="grid grid-cols-3">
@@ -111,7 +102,7 @@ const TablePage = () => {
             hbkuCRNS.length ?
               hbkuCRNS
                 .map((e: string) => ({...getHBKUCourseDetails(e, data.hbkuCourses), crn: e}))
-                .map((e, index) => (e &&
+                .map((e) => (e &&
                   <div key={e.crn}>
                     <p>{e.name} ({e.title})</p>
                     {
@@ -158,7 +149,7 @@ const TablePage = () => {
           }
         </div>
         <div>
-          <CourseDetails hoveredCell={hoveredCell} howdy={data.howdy}/>
+          <CourseDetails hoveredCell={hoveredCell} howdy={data.howdy} hbkuCourses={data.hbkuCourses}/>
         </div>
       </div>
     </div>
