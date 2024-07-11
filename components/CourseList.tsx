@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import {useArrayState} from '@/hooks/state'
 
 type Props = {
   courses: string[]
@@ -12,21 +12,7 @@ type Props = {
 }
 
 const CourseList = ({courses: data, courseInfoCallback, type}: Props) => {
-  const [courses, setCourses] = useState(data || [])
-
-  const handleAddCourse = () => {
-    setCourses([...courses, ''])
-  }
-
-  const handleRemoveCourse = (index: number) => {
-    setCourses(courses.filter((_, i) => i !== index))
-  }
-
-  const handleChangeCourse = (index: number, value: string) => {
-    const newCourses = courses.slice()
-    newCourses[index] = value
-    setCourses(newCourses)
-  }
+  const {value: courses, add, remove, update} = useArrayState(data || [])
 
   return (
     <div>
@@ -37,10 +23,10 @@ const CourseList = ({courses: data, courseInfoCallback, type}: Props) => {
               type="text"
               name={`${type}_courses[]`}
               value={course}
-              onChange={(e) => handleChangeCourse(i, e.target.value)}
+              onChange={(e) => update(e.target.value, i)}
               className="dark:text-white"
             />
-            <button className="text-white" type="button" onClick={() => handleRemoveCourse(i)}>
+            <button className="text-white" type="button" onClick={() => remove(i)}>
               Remove
             </button>
             <div className="text-white">
@@ -54,7 +40,7 @@ const CourseList = ({courses: data, courseInfoCallback, type}: Props) => {
           </div>
         ))}
       </div>
-      <button type="button" onClick={handleAddCourse}
+      <button type="button" onClick={() => add('')}
               className="text-white">
         Add Course
       </button>

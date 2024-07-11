@@ -17,19 +17,25 @@ const defaultLayout = ({children}: { children: ReactNode }) => (
   </>
 )
 
+const Providers = ({children}: { children: ReactNode }) => (
+  <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+    <AuthProvider>
+      <SWRConfiguration>
+        {children}
+      </SWRConfiguration>
+    </AuthProvider>
+  </ThemeProvider>
+)
+
 export default function App({Component, pageProps}: Props) {
   const Layout = Component.layout || defaultLayout
   return (
     <ErrorBoundary>
-      <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-        <AuthProvider>
-          <SWRConfiguration>
-            <Layout>
-              <Component {...pageProps} />
-            </Layout>
-          </SWRConfiguration>
-        </AuthProvider>
-      </ThemeProvider>
+      <Providers>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </Providers>
     </ErrorBoundary>
   )
 }

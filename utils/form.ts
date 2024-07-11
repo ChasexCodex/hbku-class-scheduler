@@ -1,5 +1,6 @@
-import {ChangeEvent, FormEvent} from 'react'
+import {ChangeEvent, FormEvent, KeyboardEvent} from 'react'
 import {Promiseable} from '@/types'
+import _ from 'lodash'
 
 export const submitForm = (callback: (formData: FormData) => Promiseable<void>) => (e: FormEvent<HTMLFormElement>) => {
   e.preventDefault()
@@ -15,4 +16,10 @@ type HTMLFormInputElement = HTMLInputElement | HTMLSelectElement | HTMLTextAreaE
 
 export const handle = <T extends HTMLFormInputElement>(callback: (value: string) => void) => (e: ChangeEvent<T>) => {
   callback(e.target.value)
+}
+
+export const checkNumeric = <T>(e: KeyboardEvent<T>) => {
+  if (e.key !== 'Backspace' && e.key !== 'Tab' && _.isNumber(e.key)) {
+    e.preventDefault()
+  }
 }
