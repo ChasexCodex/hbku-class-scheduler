@@ -61,40 +61,34 @@ const Table = ({texasTimings, hbkuTimings, onCellHover}: Props) => {
       </div>
       <div className="flex-1 flex flex-col">
         <div className="grid grid-cols-5">
-          {
-            days.map((day, i) => (
-              <p key={i} className="border text-center">{day}</p>
-            ))
-          }
+          {days.map((day, i) => (
+            <p key={i} className="border text-center">{day}</p>
+          ))}
         </div>
         <div className="flex-1 grid grid-cols-5">
-          {
-            days.map((_, day) => (
-              <div key={day} className="border relative pointer-events-none">
-                {
-                  groupIfOverlap(texasTimingsMapped.filter(e => e.day === day))
-                    .map((group, i) => (
-                      <div key={i}
-                           className="absolute inset-0 grid gap-x-0.5"
-                           style={{
-                             gridTemplateColumns: `repeat(${group.length}, minmax(0, 1fr))`,
-                           }}>
-                        {group.map((lectureTime, j) => (
-                          <Cell key={j} {...lectureTime} onCellHover={onCellHover}/>
-                        ))}
-                      </div>
-                    ))
-                }
-                {
-                  hbkuTimingsMapped.filter(e => e.day === day)
-                    .map((e, j) => (
-                      <div key={e.crn} className="absolute inset-0 grid opacity-80">
-                        <Cell {...e} onCellHover={onCellHover} overlap={detectOverlap(e, texasTimingsMapped.filter(e => e.day === day))}/>
-                      </div>
-                    ))
-                }
-              </div>
-            ))
+          {days.map((_, day) => (
+            <div key={day} className="border relative pointer-events-none">
+              {groupIfOverlap(texasTimingsMapped.filter(e => e.day === day))
+                .map((group, i) => (
+                  <div key={i}
+                       className="absolute inset-0 grid gap-x-0.5"
+                       style={{
+                         gridTemplateColumns: `repeat(${group.length}, minmax(0, 1fr))`,
+                       }}>
+                    {group.map((lectureTime, j) => (
+                      <Cell key={j} {...lectureTime} onCellHover={onCellHover}/>
+                    ))}
+                  </div>
+                ))}
+              {hbkuTimingsMapped.filter(e => e.day === day)
+                .map((e) => (
+                  <div key={e.crn} className="absolute inset-0 grid opacity-80">
+                    <Cell {...e} onCellHover={onCellHover}
+                          overlap={detectOverlap(e, texasTimingsMapped.filter(e => e.day === day))}/>
+                  </div>
+                ))}
+            </div>
+          ))
           }
         </div>
       </div>
