@@ -16,12 +16,12 @@ const AuthGuard = (WrappedComponent: ComponentType, optionalAuth?: boolean) => {
     useEffect(() => {
       if (loading) return
 
-      if (!optionalAuth && !user.data) {
+      if (!optionalAuth && !user.data?.emailVerified) {
         router.push(loginRoute)
         return
       }
 
-      if (optionalAuth && user.data) {
+      if (optionalAuth && user.data?.emailVerified) {
         router.push(dashboardRoute)
         return
       }
