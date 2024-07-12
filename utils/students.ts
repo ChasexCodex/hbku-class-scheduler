@@ -110,7 +110,7 @@ export const getAllTexasCourses = (term: string) => () => {
 export const getHBKUCourseDetails = (crn: string, hbkuCourses: HBKUCourseType[]) => {
   const course = hbkuCourses.find((course: HBKUCourseType) => course.crn === crn)
 
-  if (!course) return []
+  if (!course) return undefined
 
   return {
     crn,
