@@ -24,15 +24,21 @@ function StudentDashboard() {
     <div className="flex-1 flex flex-col items-center py-10">
       <div className="bg-zinc-200 dark:bg-zinc-900 shadow rounded-lg p-8 mb-6 w-full max-w-md">
         <p className="text-xl font-semibold mb-4">Welcome</p>
-        <div className="flex flex-col space-y-2">
+        <div className="flex flex-row justify-between">
           {!loading && admin &&
-            <Link href="/student/table"
-                  className="mt-4 inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded text-center w-max">
-              Table
-            </Link>
+            <>
+              <Link href="/student/table"
+                    className="block bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded text-center w-max">
+                Table
+              </Link>
+              <Link href="/student/admin"
+                    className="block bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded text-center w-max">
+                Admin
+              </Link>
+            </>
           }
           <Link href="/student/details"
-                className="mt-4 inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded text-center w-max">
+                className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded text-center w-max">
             Details
           </Link>
           <button onClick={handleSubmit} type="submit"

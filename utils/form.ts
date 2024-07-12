@@ -2,9 +2,9 @@ import {ChangeEvent, FormEvent, KeyboardEvent} from 'react'
 import {Promiseable} from '@/types'
 import _ from 'lodash'
 
-export const submitForm = (callback: (formData: FormData) => Promiseable<void>) => (e: FormEvent<HTMLFormElement>) => {
+export const submitForm = (callback?: (formData: FormData) => Promiseable<void>) => (e: FormEvent<HTMLFormElement>) => {
   e.preventDefault()
-  callback(new FormData(e.currentTarget))
+  callback?.(new FormData(e.currentTarget))
 }
 
 export const idify = <T>(e: T) => ({...e, id: Math.random()})

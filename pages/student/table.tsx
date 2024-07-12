@@ -12,7 +12,6 @@ import {useArrayState, useObjectState} from '@/hooks/state'
 import {load, save} from '@/utils/storage'
 import {HBKUCourseType, HBKUTiming, HBKUTimingsState} from '@/types'
 import _ from 'lodash'
-import SWRSuspense from '@/components/SWRSuspense'
 import {setUserLayout} from '@/layouts/UserLayout'
 import HBKUCourseTimings from '@/components/HBKUCourseTimings'
 
@@ -63,54 +62,52 @@ const TablePage = () => {
   }
 
   return (
-    <SWRSuspense>
-      <div className="container mx-auto space-y-4">
-        <h1 className="text-3xl font-bold">Table Page</h1>
-        <select className="py-1 px-2 rounded-md" value={year} onChange={setState(setYear)}>
-          {years.map((e, i) => (
-            <option key={i} value={i + 1}>{e}</option>
-          ))}
-        </select>
-        <Table
-          texasTimings={timings}
-          hbkuTimings={hbkuTimings.value}
-          onCellHover={handleCellHover}
+    <div className="container mx-auto space-y-4 py-2">
+      <h1 className="text-3xl font-bold">Table Page</h1>
+      <select className="py-1 px-2 rounded-md" value={year} onChange={setState(setYear)}>
+        {years.map((e, i) => (
+          <option key={i} value={i + 1}>{e}</option>
+        ))}
+      </select>
+      <Table
+        texasTimings={timings}
+        hbkuTimings={hbkuTimings.value}
+        onCellHover={handleCellHover}
+      />
+      <div className="grid grid-cols-3 gap-4">
+        <HBKUCourseTimings
+          crns={hbkuCRNS}
+          courses={data.hbkuCourses}
+          timings={hbkuTimings.value}
+          handleTimingsChange={handleHBKUTimingsChange}
+          handleAddTiming={handleAddHBKUTiming}
+          handleRemoveTiming={handleRemoveHBKUTiming}
         />
-        <div className="grid grid-cols-3 gap-4">
-          <HBKUCourseTimings
-            crns={hbkuCRNS}
-            courses={data.hbkuCourses}
-            timings={hbkuTimings.value}
-            handleTimingsChange={handleHBKUTimingsChange}
-            handleAddTiming={handleAddHBKUTiming}
-            handleRemoveTiming={handleRemoveHBKUTiming}
-          />
-          <div>
-            <div className="rounded-lg border-2 bg-zinc-800 px-4 pb-4 pt-2">
-              <p className="text-xl mb-2 font-semibold">Course Selection</p>
-              <div className="space-y-1">
-                {crns
-                  .map(course => getTexasCourseDetails(course, data.howdy)!)
-                  .filter(e => e)
-                  .map(({crn, ...details}) => (
-                    <CourseCheckbox
-                      key={crn}
-                      course={crn}
-                      details={details}
-                      selected={coursesSelection.value.includes(crn)}
-                      onChange={() => handleSelectionChange(crn)}
-                    />
-                  ))
-                }
-              </div>
+        <div>
+          <div className="rounded-lg border-2 border-gray-400 dark:bg-zinc-800 px-4 pb-4 pt-2">
+            <p className="text-xl mb-2 font-semibold">Course Selection</p>
+            <div className="space-y-1">
+              {crns
+                .map(course => getTexasCourseDetails(course, data.howdy)!)
+                .filter(e => e)
+                .map(({crn, ...details}) => (
+                  <CourseCheckbox
+                    key={crn}
+                    course={crn}
+                    details={details}
+                    selected={coursesSelection.value.includes(crn)}
+                    onChange={() => handleSelectionChange(crn)}
+                  />
+                ))
+              }
             </div>
           </div>
-          <div>
-            <CourseDetails hoveredCell={hoveredCell} howdy={data.howdy} hbkuCourses={data.hbkuCourses}/>
-          </div>
+        </div>
+        <div>
+          <CourseDetails hoveredCell={hoveredCell} howdy={data.howdy} hbkuCourses={data.hbkuCourses}/>
         </div>
       </div>
-    </SWRSuspense>
+    </div>
   )
 }
 

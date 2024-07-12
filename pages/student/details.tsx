@@ -4,7 +4,6 @@ import CourseList from '@/components/CourseList'
 import {getHBKUCourseDetails, getTexasCourseDetails} from '@/utils/students'
 import {currentTerm} from '@/utils/const'
 import {checkNumeric, submitForm} from '@/utils/form'
-import SWRSuspense from '@/components/SWRSuspense'
 import {setUserLayout} from '@/layouts/UserLayout'
 
 function Details() {
@@ -24,7 +23,6 @@ function Details() {
   }
 
   return (
-    <SWRSuspense>
       <div className="p-6 shadow-md rounded-lg">
         <h1 className="text-3xl font-bold mb-4">Student Details</h1>
         <form onSubmit={submitForm(handleSubmit)} className="space-y-4">
@@ -61,7 +59,6 @@ function Details() {
           </button>
         </form>
       </div>
-    </SWRSuspense>
   )
 }
 

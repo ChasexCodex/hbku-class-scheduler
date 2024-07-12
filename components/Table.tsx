@@ -54,7 +54,7 @@ const Table = ({texasTimings, hbkuTimings, onCellHover}: Props) => {
       <div>
         <div className="border text-center">/</div>
         {Array.from({length: 13}).map((_, i) => (
-          <div className="border text-center" key={i}>
+          <div className="border text-center py-2" key={i}>
             {i > 5 ? i - 5 : i + 7}
           </div>
         ))}

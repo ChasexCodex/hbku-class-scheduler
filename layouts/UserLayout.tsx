@@ -4,6 +4,7 @@ import Link from 'next/link'
 import {useRouter} from 'next/router'
 import {PropsWithChildren} from 'react'
 import _ from 'lodash'
+import SWRSuspense from '@/components/SWRSuspense'
 
 const inter = Inter({subsets: ['latin']})
 
@@ -43,7 +44,9 @@ function UserLayout({children}: PropsWithChildren) {
           </div>
         </div>
       </nav>
-      {children}
+      <SWRSuspense>
+        {children}
+      </SWRSuspense>
     </main>
   )
 }

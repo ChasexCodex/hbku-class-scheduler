@@ -7,7 +7,7 @@ type Props = {
 
 const CourseCheckbox = ({ course, details, selected, onChange }: Props) => {
   return (
-    <div className="flex items-center space-x-2 p-1 bg-gray-50 dark:bg-gray-700 rounded-lg">
+    <div className="flex items-center space-x-2 p-1 bg-zinc-50 dark:bg-zinc-700 rounded-lg">
       <input
         type="checkbox"
         id={course}

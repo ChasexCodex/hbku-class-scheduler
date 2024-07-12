@@ -18,7 +18,7 @@ const CourseDetails = ({hoveredCell, howdy, hbkuCourses}: Props) => {
   }
 
   return (
-    <div className="p-4 border-2 rounded-lg">
+    <div className="p-4 border-2 border-gray-400 rounded-lg">
       <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Course Details</h2>
       <p className="mt-2 text-gray-700 dark:text-gray-300">Name: <span className="font-medium">{details.name}</span></p>
       {'section' in details && <p className="text-gray-700 dark:text-gray-300">Section: <span className="font-medium">{details.section}</span></p>}
