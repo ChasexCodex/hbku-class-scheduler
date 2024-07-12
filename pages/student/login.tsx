@@ -34,7 +34,7 @@ function LoginPage() {
     <main className={`${inter.className} min-h-screen bg-gray-100 dark:bg-zinc-950 flex justify-center items-center`}>
       <form onSubmit={submitForm(handleSubmit)} className="mx-auto min-w-96 max-w-4xl p-4 space-y-6 border-2 border-black dark:border-white rounded-lg shadow-xl dark:shadow-zinc-700">
         <div className="flex flex-row justify-between">
-          <h2 className="text-3xl font-bold">
+          <h2 className="text-3xl font-bold text-gray-700 dark:text-gray-300">
             {newUser ? 'Signup' : 'Login'}
           </h2>
           <DarkModeButton/>
