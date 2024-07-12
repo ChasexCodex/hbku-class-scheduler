@@ -99,18 +99,21 @@ export const updateHBKUCourses = async (courses: HBKUCourseType[]) => {
   }
 }
 
-export const getAllTexasCourses = (term: string) => () => {
-  return fetch(`${config('appUrl')}/api/howdy`, {
-    body: JSON.stringify({term}),
-    headers: {'Content-Type': 'application/json'},
-    mode: 'no-cors',
-    method: 'POST',
-  })
-    .then(res => res.json())
-    .catch(error => {
-      console.log(error)
-      return []
+export const getAllTexasCourses = (term: string) => async () => {
+  try {
+    let res = await fetch(`${config('appUrl')}/api/howdy`, {
+      body: JSON.stringify({term}),
+      headers: {'Content-Type': 'application/json'},
+      mode: 'no-cors',
+      method: 'POST',
     })
+
+    console.log(await res.text())
+    return res.json()
+  } catch (error) {
+    console.log(error)
+    return []
+  }
 }
 
 export const getHBKUCourseDetails = (crn: string, hbkuCourses: HBKUCourseType[]) => {
