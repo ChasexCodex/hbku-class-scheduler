@@ -55,7 +55,7 @@ export const onAuthStateChange = (callback: (user: any) => void) => {
 export const sendVerificationEmail = async (user: any) => {
   try {
     await sendEmailVerification(user, {
-      url: config('appUrl')
+      url: `${config('appUrl')}/student/dashboard`
     })
     return {success: true}
   } catch (e) {
