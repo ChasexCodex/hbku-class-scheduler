@@ -1,6 +1,7 @@
-import {doc, getDoc, getDocs, setDoc, updateDoc, collection, writeBatch} from '@firebase/firestore'
+import {collection, doc, getDoc, getDocs, setDoc, updateDoc, writeBatch} from '@firebase/firestore'
 import {db} from '@/utils/firebase'
 import {HBKUCourseType, StudentData, SWVEntry} from '@/types'
+import config from '@/utils/config'
 
 export const getStudentData = async (uid: string) => {
   const d = doc(db, 'students', uid)
@@ -94,19 +95,12 @@ export const updateHBKUCourses = async (courses: HBKUCourseType[]) => {
   }
 }
 
-export const getAllTexasCourses = (term: string) => async (url: string) => {
-  const res = await fetch(url, {
-    method: 'POST',
+export const getAllTexasCourses = (term: string) => () => {
+  return fetch(`${config('appUrl')}/api/howdy`, {
+    body: JSON.stringify({term}),
     headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({
-      'startRow': 0,
-      'endRow': 0,
-      'termCode': term,
-      'publicSearch': 'Y',
-    }),
-  })
-
-  return await res.json()
+    method: 'POST',
+  }).then(res => res.json())
 }
 
 export const getHBKUCourseDetails = (crn: string, hbkuCourses: HBKUCourseType[]) => {
