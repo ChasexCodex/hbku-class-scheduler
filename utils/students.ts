@@ -58,7 +58,7 @@ export const getAllHBKUCourses = async ({}) => {
   const courses = await getDocs(collection(db, 'hbku_courses'))
 
   if (courses.empty) {
-    return []
+    return [] as HBKUCourseType[]
   }
 
   return courses.docs.map(doc => doc.data() as HBKUCourseType)
