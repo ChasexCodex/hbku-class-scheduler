@@ -105,7 +105,12 @@ export const getAllTexasCourses = (term: string) => () => {
     headers: {'Content-Type': 'application/json'},
     mode: 'no-cors',
     method: 'POST',
-  }).then(res => res.json())
+  })
+    .then(res => res.json())
+    .catch(error => {
+      console.log(error)
+      return []
+    })
 }
 
 export const getHBKUCourseDetails = (crn: string, hbkuCourses: HBKUCourseType[]) => {
