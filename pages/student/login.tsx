@@ -13,6 +13,7 @@ const inter = Inter({subsets: ['latin']})
 function LoginPage() {
   const router = useRouter()
   const [error, setError] = useState<string | undefined>()
+  const [message, setMessage] = useState<string | undefined>(undefined)
   const [newUser, setNewUser] = useState(false)
 
   const handleSubmit = async (formData: FormData) => {
@@ -32,7 +33,9 @@ function LoginPage() {
         const res2 = await sendVerificationEmail((res.data as any).createUserResponse.user)
         if (!res2.success) {
           setError(res2.error)
+          return
         }
+        setMessage('Verification email sent. Please verify your email then log in.')
         return
       }
       await router.replace('/student/dashboard')
@@ -129,6 +132,16 @@ function LoginPage() {
             </button>
             <p className="text-sm text-red-700">
               {error}
+            </p>
+          </div>
+        )}
+        {message && (
+          <div className="relative mt-4 p-4 border border-green-500 rounded-md bg-green-50">
+            <button className="absolute top-0 right-0 mt-2 mr-2" onClick={() => setError(undefined)}>
+              x
+            </button>
+            <p className="text-sm text-green-700">
+              {message}
             </p>
           </div>
         )}
