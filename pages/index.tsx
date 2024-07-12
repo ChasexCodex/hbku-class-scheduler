@@ -1,8 +1,8 @@
-import { Inter } from 'next/font/google';
-import Link from 'next/link';
 import DarkModeButton from '@/components/DarkModeButton'
+import {Inter} from 'next/font/google'
+import Link from 'next/link'
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({subsets: ['latin']})
 
 export default function Home() {
   return (
@@ -18,9 +18,15 @@ export default function Home() {
       </div>
       <footer
         className="mt-auto border-t dark:border-gray-700 w-full text-center bg-zinc-200 dark:bg-zinc-900 p-4 flex flex-row justify-between">
-        <p className="text-gray-400">Made By Elyas Al-Amri &copy; {new Date().getFullYear()}</p>
+        <label className="text-gray-400 cursor-pointer relative">
+          <p>
+            <input type="checkbox" className="peer hidden"/>
+            Made By <span className="peer-checked:hidden">Elyas Al-Amri &copy; {new Date().getFullYear()}</span>
+            <span className="hidden peer-checked:inline animate-ping">the incompetent programmer &copy;</span>
+          </p>
+        </label>
         <DarkModeButton/>
       </footer>
     </main>
-  );
+  )
 }
