@@ -4,7 +4,7 @@ import {getDistinctCoursesList, getLectureTimings} from '@/utils/table'
 import Table from '@/components/Table'
 import {useState} from 'react'
 import {getHBKUCourseDetails, getTexasCourseDetails} from '@/utils/students'
-import {currentTerm, years} from '@/utils/const'
+import {currentTerm, days, years} from '@/utils/const'
 import {setState} from '@/utils/form'
 import CourseCheckbox from '@/components/CourseCheckbox'
 import CourseDetails from '@/components/CourseDetails'
@@ -13,6 +13,8 @@ import {load, save} from '@/utils/storage'
 import {HBKUCourseType, HBKUTiming, HBKUTimingsState} from '@/types'
 import _ from 'lodash'
 import SWRSuspense from '@/components/SWRSuspense'
+import {setUserLayout} from '@/layouts/UserLayout'
+import HBKUCourseTimings from '@/components/HBKUCourseTimings'
 
 const TablePage = () => {
   const {data} = useCourses(currentTerm)
@@ -50,16 +52,21 @@ const TablePage = () => {
     hbkuTimings.updateField(crn, timings, (newState) => save<HBKUTimingsState>('hbkuTimings', newState))
   }
 
-  const handleAddHBKUTiming = (crn: string) => () => {
+  const handleAddHBKUTiming = (crn: string) => {
     const timings = _.concat(hbkuTimings.value[crn], {start: '08:00', end: '08:00', day: 0})
+    hbkuTimings.updateField(crn, timings, (newState) => save<HBKUTimingsState>('hbkuTimings', newState))
+  }
+
+  const handleRemoveHBKUTiming = (crn: string, index: number) => {
+    const timings = _.filter(hbkuTimings.value[crn], (_, i) => index !== i)
     hbkuTimings.updateField(crn, timings, (newState) => save<HBKUTimingsState>('hbkuTimings', newState))
   }
 
   return (
     <SWRSuspense>
-      <div>
-        <h1>Table Page</h1>
-        <select value={year} onChange={setState(setYear)}>
+      <div className="container mx-auto space-y-4">
+        <h1 className="text-3xl font-bold">Table Page</h1>
+        <select className="py-1 px-2 rounded-md" value={year} onChange={setState(setYear)}>
           {years.map((e, i) => (
             <option key={i} value={i + 1}>{e}</option>
           ))}
@@ -69,70 +76,34 @@ const TablePage = () => {
           hbkuTimings={hbkuTimings.value}
           onCellHover={handleCellHover}
         />
-        <div className="grid grid-cols-3">
+        <div className="grid grid-cols-3 gap-4">
+          <HBKUCourseTimings
+            crns={hbkuCRNS}
+            courses={data.hbkuCourses}
+            timings={hbkuTimings.value}
+            handleTimingsChange={handleHBKUTimingsChange}
+            handleAddTiming={handleAddHBKUTiming}
+            handleRemoveTiming={handleRemoveHBKUTiming}
+          />
           <div>
-            {
-              crns.map(course => (
-                <CourseCheckbox
-                  key={course}
-                  course={course}
-                  selected={coursesSelection.value.includes(course)}
-                  details={getTexasCourseDetails(course, data.howdy)}
-                  onChange={() => handleSelectionChange(course)}
-                />
-              ))
-            }
-          </div>
-          <div>
-            {
-              hbkuCRNS.length ?
-                hbkuCRNS
-                  .map((e: string) => ({...getHBKUCourseDetails(e, data.hbkuCourses), crn: e}))
-                  .map((e) => (e &&
-                    <div key={e.crn}>
-                      <p>{e.name} ({e.title})</p>
-                      {
-                        hbkuTimings.value[e.crn] ?
-                          hbkuTimings.value[e.crn].map((t, i) => (
-                            <div key={i}>
-                              <label className="space-x-2">
-                                <span>Start</span>
-                                <input
-                                  type="time"
-                                  defaultValue={t.start}
-                                  onChange={(event) => handleHBKUTimingsChange(e.crn, i, 'start', event.target.value)}
-                                />
-                              </label>
-                              <label className="space-x-2">
-                                <span>End</span>
-                                <input
-                                  type="time"
-                                  defaultValue={t.end}
-                                  onChange={(event) => handleHBKUTimingsChange(e.crn, i, 'end', event.target.value)}
-                                />
-                              </label>
-                              <label className="space-x-2">
-                                <span>Day</span>
-                                <select
-                                  defaultValue={t.day}
-                                  onChange={(event) => handleHBKUTimingsChange(e.crn, i, 'day', parseInt(event.target.value))}
-                                >
-                                  <option value={0}>Sunday</option>
-                                  <option value={1}>Monday</option>
-                                  <option value={2}>Tuesday</option>
-                                  <option value={3}>Wednesday</option>
-                                  <option value={4}>Thursday</option>
-                                </select>
-                              </label>
-                            </div>
-                          )) :
-                          <p>No timings set</p>
-                      }
-                      <button onClick={handleAddHBKUTiming(e.crn)}>Add Timing</button>
-                    </div>
-                  )) :
-                <p className="text-white">No HBKU courses listed</p>
-            }
+            <div className="rounded-lg border-2 bg-zinc-800 px-4 pb-4 pt-2">
+              <p className="text-xl mb-2 font-semibold">Course Selection</p>
+              <div className="space-y-1">
+                {crns
+                  .map(course => getTexasCourseDetails(course, data.howdy)!)
+                  .filter(e => e)
+                  .map(({crn, ...details}) => (
+                    <CourseCheckbox
+                      key={crn}
+                      course={crn}
+                      details={details}
+                      selected={coursesSelection.value.includes(crn)}
+                      onChange={() => handleSelectionChange(crn)}
+                    />
+                  ))
+                }
+              </div>
+            </div>
           </div>
           <div>
             <CourseDetails hoveredCell={hoveredCell} howdy={data.howdy} hbkuCourses={data.hbkuCourses}/>
@@ -143,4 +114,4 @@ const TablePage = () => {
   )
 }
 
-export default AdminGuard(TablePage)
+export default setUserLayout(AdminGuard(TablePage))

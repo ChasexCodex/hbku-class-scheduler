@@ -115,6 +115,7 @@ export const getHBKUCourseDetails = (crn: string, hbkuCourses: HBKUCourseType[])
   if (!course) return undefined
 
   return {
+    crn,
     name: course.name,
     title: course.title,
     instructor: course.instructor,
@@ -127,6 +128,7 @@ export const getTexasCourseDetails = (crn: string, howdy: SWVEntry[]) => {
   if (!course) return undefined
 
   return {
+    crn,
     name: `${course.SWV_CLASS_SEARCH_SUBJECT} ${course.SWV_CLASS_SEARCH_COURSE}`,
     title: course.SWV_CLASS_SEARCH_TITLE,
     section: course.SWV_CLASS_SEARCH_SECTION,

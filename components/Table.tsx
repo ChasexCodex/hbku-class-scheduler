@@ -1,4 +1,4 @@
-import {groupIfOverlap, toMinutes, toTime} from '@/utils/table'
+import {detectOverlap, groupIfOverlap, toMinutes, toTime} from '@/utils/table'
 import {HBKUTimingsState, LectureTime, MappedTiming} from '@/types'
 import {days} from '@/utils/const'
 
@@ -11,10 +11,11 @@ type Props = {
 type CellProps = MappedTiming & {
   onCellHover: (crn: string, enter: boolean) => void
   isCore?: boolean
+  overlap?: boolean
 }
 
-const Cell = ({start, end, crn, type, onCellHover, isCore}: CellProps) => {
-  const color = type === 'texas' ? (isCore ? 'bg-red-500' : 'bg-green-500') : 'bg-blue-500'
+const Cell = ({start, end, crn, type, onCellHover, isCore, overlap}: CellProps) => {
+  const color = type === 'texas' ? (isCore ? 'bg-red-500' : 'bg-green-500') : (overlap ? 'bg-yellow-500' : 'bg-blue-500')
 
   return (
     <div className="relative">
@@ -48,8 +49,6 @@ const Table = ({texasTimings, hbkuTimings, onCellHover}: Props) => {
       type: 'hbku',
     } as MappedTiming))).flat()
 
-  const timings = texasTimingsMapped.concat(hbkuTimingsMapped)
-
   return (
     <div className="flex flex-row border">
       <div>
@@ -64,7 +63,7 @@ const Table = ({texasTimings, hbkuTimings, onCellHover}: Props) => {
         <div className="grid grid-cols-5">
           {
             days.map((day, i) => (
-              <div key={i} className="border">{day}</div>
+              <p key={i} className="border text-center">{day}</p>
             ))
           }
         </div>
@@ -73,7 +72,7 @@ const Table = ({texasTimings, hbkuTimings, onCellHover}: Props) => {
             days.map((_, day) => (
               <div key={day} className="border relative pointer-events-none">
                 {
-                  groupIfOverlap(timings.filter(e => e.day === day))
+                  groupIfOverlap(texasTimingsMapped.filter(e => e.day === day))
                     .map((group, i) => (
                       <div key={i}
                            className="absolute inset-0 grid gap-x-0.5"
@@ -83,6 +82,14 @@ const Table = ({texasTimings, hbkuTimings, onCellHover}: Props) => {
                         {group.map((lectureTime, j) => (
                           <Cell key={j} {...lectureTime} onCellHover={onCellHover}/>
                         ))}
+                      </div>
+                    ))
+                }
+                {
+                  hbkuTimingsMapped.filter(e => e.day === day)
+                    .map((e, j) => (
+                      <div key={e.crn} className="absolute inset-0 grid opacity-80">
+                        <Cell {...e} onCellHover={onCellHover} overlap={detectOverlap(e, texasTimingsMapped.filter(e => e.day === day))}/>
                       </div>
                     ))
                 }

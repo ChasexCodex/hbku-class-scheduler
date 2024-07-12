@@ -88,3 +88,7 @@ export const isCore = (course: string, howdyCourses: SWVEntry[]): boolean => {
 
   return cores.includes(subject)
 }
+
+export const detectOverlap = (target: Timing, group: Timing[]): boolean => {
+  return group.some(e => e.start < target.end && e.end > target.start)
+}
