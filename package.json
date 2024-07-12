@@ -3,12 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "concurrently \"next dev\" \"yarn emulators\"",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "emulators": "firebase emulators:start --only auth,firestore --import=./.firebase --export-on-exit",
-    "dev-em": "concurrently \"next dev\" \"yarn emulators\""
+    "emulators": "firebase emulators:start --only auth,firestore --import=./.firebase --export-on-exit"
   },
   "dependencies": {
     "firebase": "^10.12.2",
