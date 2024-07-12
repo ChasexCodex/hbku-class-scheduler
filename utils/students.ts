@@ -103,6 +103,7 @@ export const getAllTexasCourses = (term: string) => () => {
   return fetch(`${config('appUrl')}/api/howdy`, {
     body: JSON.stringify({term}),
     headers: {'Content-Type': 'application/json'},
+    mode: 'no-cors',
     method: 'POST',
   }).then(res => res.json())
 }
