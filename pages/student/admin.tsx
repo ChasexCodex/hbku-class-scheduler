@@ -6,6 +6,7 @@ import HBKUCourse from '@/components/HBKUCourse'
 import useHBKUCourses from '@/hooks/useHBKUCourses'
 import {HBKUCourseType} from '@/types'
 import {setUserLayout} from '@/layouts/UserLayout'
+import Head from 'next/head'
 
 type CourseEntry = HBKUCourseType & { id: number }
 
@@ -66,6 +67,9 @@ const AdminPage = () => {
 
   return (
     <div className="container mx-auto p-4">
+      <Head>
+        <title>HBKU Class Scheduler - Admin</title>
+      </Head>
       <form onSubmit={submitForm(handleSubmit)} className="mb-8">
         <h2 className="text-2xl font-semibold text-gray-700 dark:text-gray-200 mb-2">
           HBKU Courses

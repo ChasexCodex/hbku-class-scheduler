@@ -1,12 +1,16 @@
 import DarkModeButton from '@/components/DarkModeButton'
 import {Inter} from 'next/font/google'
 import Link from 'next/link'
+import Head from 'next/head'
 
 const inter = Inter({subsets: ['latin']})
 
 export default function Home() {
   return (
     <main className={`min-h-screen flex flex-col ${inter.className} bg-zinc-100 dark:bg-zinc-800`}>
+      <Head>
+        <title>HBKU Class Scheduler - Home</title>
+      </Head>
       <div className="flex-1 flex flex-col justify-center items-center space-y-8">
         <p className="text-6xl md:text-8xl font-extrabold text-gray-800 dark:text-white">HBKU Class Scheduler</p>
         <Link href="/student/login">

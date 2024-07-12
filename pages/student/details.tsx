@@ -5,6 +5,7 @@ import {getHBKUCourseDetails, getTexasCourseDetails} from '@/utils/students'
 import {currentTerm} from '@/utils/const'
 import {checkNumeric, submitForm} from '@/utils/form'
 import {setUserLayout} from '@/layouts/UserLayout'
+import Head from 'next/head'
 
 function Details() {
   const {data, update} = useStudentData(currentTerm)
@@ -24,6 +25,9 @@ function Details() {
 
   return (
       <div className="p-6 shadow-md rounded-lg">
+        <Head>
+          <title>HBKU Class Scheduler - Student Details</title>
+        </Head>
         <h1 className="text-3xl font-bold mb-4">Student Details</h1>
         <form onSubmit={submitForm(handleSubmit)} className="space-y-4">
           <div className="grid grid-cols-2 gap-4 max-w-xl">

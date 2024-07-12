@@ -6,6 +6,7 @@ import AuthGuard from '@/components/AuthGuard'
 import {years} from '@/utils/const'
 import {checkNumeric, submitForm} from '@/utils/form'
 import DarkModeButton from '@/components/DarkModeButton'
+import Head from 'next/head'
 
 const inter = Inter({subsets: ['latin']})
 
@@ -44,6 +45,9 @@ function LoginPage() {
 
   return (
     <main className={`${inter.className} min-h-screen bg-gray-100 dark:bg-zinc-950 flex justify-center items-center`}>
+      <Head>
+        <title>HBKU Class Scheduler - Login</title>
+      </Head>
       <form onSubmit={submitForm(handleSubmit)}
             className="mx-auto min-w-96 max-w-4xl p-4 space-y-6 border-2 border-black dark:border-white rounded-lg shadow-xl dark:shadow-zinc-700">
         <div className="flex flex-row justify-between">

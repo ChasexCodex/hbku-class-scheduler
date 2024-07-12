@@ -4,6 +4,7 @@ import AuthGuard from '@/components/AuthGuard'
 import useAdmin from '@/hooks/useAdmin'
 import {setUserLayout} from '@/layouts/UserLayout'
 import {useState} from 'react'
+import Head from 'next/head'
 
 function StudentDashboard() {
   const {admin, loading} = useAdmin()
@@ -22,6 +23,9 @@ function StudentDashboard() {
 
   return (
     <div className="flex-1 flex flex-col items-center py-10">
+      <Head>
+        <title>HBKU Class Scheduler - Dashboard</title>
+      </Head>
       <div className="bg-zinc-200 dark:bg-zinc-900 shadow rounded-lg p-8 mb-6 w-full max-w-md">
         <p className="text-xl font-semibold mb-4">Welcome</p>
         <div className="flex flex-row justify-between">

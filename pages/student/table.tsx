@@ -14,6 +14,7 @@ import {HBKUCourseType, HBKUTiming, HBKUTimingsState} from '@/types'
 import _ from 'lodash'
 import {setUserLayout} from '@/layouts/UserLayout'
 import HBKUCourseTimings from '@/components/HBKUCourseTimings'
+import Head from 'next/head'
 
 const TablePage = () => {
   const {data} = useCourses(currentTerm)
@@ -63,6 +64,9 @@ const TablePage = () => {
 
   return (
     <div className="container mx-auto space-y-4 py-2">
+      <Head>
+        <title>HBKU Class Scheduler - Table</title>
+      </Head>
       <h1 className="text-3xl font-bold">Table Page</h1>
       <select className="py-1 px-2 rounded-md" value={year} onChange={setState(setYear)}>
         {years.map((e, i) => (
