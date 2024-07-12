@@ -1,6 +1,7 @@
-import {signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut} from '@firebase/auth'
+import {signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, sendEmailVerification} from '@firebase/auth'
 import {auth} from '@/utils/firebase'
 import {createStudentData} from '@/utils/students'
+import config from '@/utils/config'
 
 export const login = async (data: FormData) => {
   const email = data.get('email') as string
@@ -38,7 +39,7 @@ export const signup = async (data: FormData) => {
       texas_courses: [],
       hbku_courses: [],
     })
-    return {success: createStudentDataResponse.success, data: {createUserResponse, res2: createStudentDataResponse}}
+    return {success: true, data: {createUserResponse, createStudentDataResponse}}
   } catch (e) {
     const {message} = e as Error
     return {success: false, error: message}
@@ -49,4 +50,16 @@ export const onAuthStateChange = (callback: (user: any) => void) => {
   return auth.onAuthStateChanged(user => {
     callback(user)
   })
+}
+
+export const sendVerificationEmail = async (user: any) => {
+  try {
+    await sendEmailVerification(user, {
+      url: config('appUrl')
+    })
+    return {success: true}
+  } catch (e) {
+    const {message} = e as Error
+    return {success: false, error: message}
+  }
 }

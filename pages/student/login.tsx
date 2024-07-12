@@ -1,7 +1,7 @@
 import {Inter} from 'next/font/google'
 import {useState} from 'react'
 import {useRouter} from 'next/router'
-import {login, signup} from '@/utils/auth'
+import {login, sendVerificationEmail, signup} from '@/utils/auth'
 import AuthGuard from '@/components/AuthGuard'
 import {years} from '@/utils/const'
 import {checkNumeric, submitForm} from '@/utils/form'
@@ -15,6 +15,11 @@ function LoginPage() {
   const [newUser, setNewUser] = useState(false)
 
   const handleSubmit = async (formData: FormData) => {
+    // assert emails are hbku emails
+    if (!formData.get('email')?.toString().endsWith('@hbku.edu.qa')) {
+      return setError('Please use your HBKU email')
+    }
+
     if (newUser && formData.get('password') !== formData.get('confirm-password')) {
       return setError('Passwords do not match')
     }
@@ -22,6 +27,13 @@ function LoginPage() {
     const res = await (newUser ? signup : login)(formData)
 
     if (res.success) {
+      if (newUser) {
+        const res2 = await sendVerificationEmail((res.data as any).createUserResponse.user)
+        if (!res2.success) {
+          setError(res2.error)
+        }
+        return
+      }
       await router.replace('/student/dashboard')
       return
     }
@@ -32,7 +44,8 @@ function LoginPage() {
 
   return (
     <main className={`${inter.className} min-h-screen bg-gray-100 dark:bg-zinc-950 flex justify-center items-center`}>
-      <form onSubmit={submitForm(handleSubmit)} className="mx-auto min-w-96 max-w-4xl p-4 space-y-6 border-2 border-black dark:border-white rounded-lg shadow-xl dark:shadow-zinc-700">
+      <form onSubmit={submitForm(handleSubmit)}
+            className="mx-auto min-w-96 max-w-4xl p-4 space-y-6 border-2 border-black dark:border-white rounded-lg shadow-xl dark:shadow-zinc-700">
         <div className="flex flex-row justify-between">
           <h2 className="text-3xl font-bold text-gray-700 dark:text-gray-300">
             {newUser ? 'Signup' : 'Login'}
@@ -76,7 +89,8 @@ function LoginPage() {
                 <label htmlFor="uid" className="block text-sm font-medium text-gray-700">
                   University ID
                 </label>
-                <input type="text" name="uid" className="login-input" placeholder="University ID..." onKeyDown={checkNumeric}/>
+                <input type="text" name="uid" className="login-input" placeholder="University ID..."
+                       onKeyDown={checkNumeric}/>
               </div>
               <div>
                 <label htmlFor="year" className="block text-sm font-medium text-gray-700">

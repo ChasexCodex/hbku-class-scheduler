@@ -21,6 +21,7 @@ const configData = {
     messagingSenderId: required(process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID),
   },
   coursesApi: required(process.env.NEXT_PUBLIC_HOWDY_COURSES_URL),
+  appUrl: required(process.env.NEXT_PUBLIC_APP_URL),
 }
 
 type ConfigKey = keyof typeof configData
