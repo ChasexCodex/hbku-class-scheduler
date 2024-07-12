@@ -130,6 +130,6 @@ export const getTexasCourseDetails = (crn: string, howdy: SWVEntry[]) => {
     name: `${course.SWV_CLASS_SEARCH_SUBJECT} ${course.SWV_CLASS_SEARCH_COURSE}`,
     title: course.SWV_CLASS_SEARCH_TITLE,
     section: course.SWV_CLASS_SEARCH_SECTION,
-    instructor: Array.isArray(course.SWV_CLASS_SEARCH_INSTRCTR_JSON) ? course.SWV_CLASS_SEARCH_INSTRCTR_JSON[0].NAME : JSON.parse(course.SWV_CLASS_SEARCH_INSTRCTR_JSON).NAME,
+    instructor: Array.isArray(course.SWV_CLASS_SEARCH_INSTRCTR_JSON) ? course.SWV_CLASS_SEARCH_INSTRCTR_JSON[0].NAME : JSON.parse(course.SWV_CLASS_SEARCH_INSTRCTR_JSON)[0].NAME,
   }
 }

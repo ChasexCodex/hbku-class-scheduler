@@ -9,8 +9,8 @@ const stateOperation = <T>(setValue: (value: T) => void, newValue: T) => {
 export const useArrayState = <T>(initialValue: T[] | (() => T[]) = []) => {
   const [value, setValue] = useState(initialValue);
   const add = (item: T) => stateOperation(setValue, _.concat(value, item))
-  const remove = (index: number) => stateOperation(setValue, _.remove(value, (_, i) => i === index))
-  const update = (updatedItem: T, index: number) => stateOperation(setValue, _.set(value, index, updatedItem))
+  const remove = (index: number) => stateOperation(setValue, _.remove(value, (_, i) => i !== index))
+  const update = (updatedItem: T, index: number) => stateOperation(setValue, _.cloneDeep(_.set(value, index, updatedItem)))
 
   return {value, setValue, add, remove, update}
 }

@@ -3,15 +3,15 @@ import useStudentData from '@/hooks/useStudentData'
 import CourseList from '@/components/CourseList'
 import {getHBKUCourseDetails, getTexasCourseDetails} from '@/utils/students'
 import {currentTerm} from '@/utils/const'
-import {submitForm} from '@/utils/form'
+import {checkNumeric, submitForm} from '@/utils/form'
 import SWRSuspense from '@/components/SWRSuspense'
+import {setUserLayout} from '@/layouts/UserLayout'
 
 function Details() {
   const {data, update} = useStudentData(currentTerm)
   const {studentData} = data
 
   const handleSubmit = async (formData: FormData) => {
-
     const data = {
       name: formData.get('name'),
       year: formData.get('year'),
@@ -25,31 +25,44 @@ function Details() {
 
   return (
     <SWRSuspense>
-      <div>
-        <h1>Student Details</h1>
-        <form onSubmit={submitForm(handleSubmit)} className="dark:text-white">
-          <input type="text" name="name" placeholder="Name" defaultValue={studentData.name}/>
-          <select name="year" defaultValue={studentData.year}>
-            {['Freshman', 'Sophomore', 'Junior', 'Senior'].map((year, i) => (
-              <option key={year} value={i + 1}>{year}</option>
-            ))}
-          </select>
-          <input type="number" name="uid" defaultValue={studentData.uid}/>
+      <div className="p-6 shadow-md rounded-lg">
+        <h1 className="text-3xl font-bold mb-4">Student Details</h1>
+        <form onSubmit={submitForm(handleSubmit)} className="space-y-4">
+          <div className="grid grid-cols-2 gap-4 max-w-xl">
+            <label htmlFor="name" className="block text-sm font-medium text-zinc-700 dark:text-zinc-100">Name</label>
+            <input type="text" name="name" id="name" placeholder="Name" defaultValue={studentData.name}
+                   className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+
+            <label htmlFor="year" className="block text-sm font-medium text-zinc-700 dark:text-zinc-100">Academic Year</label>
+            <select name="year" id="year" defaultValue={studentData.year}
+                    className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+              {['Freshman', 'Sophomore', 'Junior', 'Senior'].map((year, i) => (
+                <option key={year} value={i + 1}>{year}</option>
+              ))}
+            </select>
+
+            <label htmlFor="uid" className="block text-sm font-medium text-zinc-700 dark:text-zinc-100">University ID</label>
+            <input type="text" onKeyDown={checkNumeric} name="uid" id="uid" defaultValue={studentData.uid}
+                   className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+          </div>
           <br/>
 
-          <p className="text-white font-bold">Texas Courses</p>
+          <h1 className="text-3xl font-bold mb-2">Texas Courses</h1>
           <CourseList courseInfoCallback={(c) => getTexasCourseDetails(c, data.howdy)}
                       courses={studentData.texas_courses}
                       type="texas"/>
-          <p className="text-white font-bold">HBKU Courses</p>
+          <h1 className="text-3xl font-bold mb-2">HBKU Courses</h1>
           <CourseList courseInfoCallback={(c) => getHBKUCourseDetails(c, data.hbkuCourses)}
                       courses={studentData.hbku_courses} type="hbku"/>
 
-          <button type="submit" className="text-white">Update</button>
+          <button type="submit"
+                  className="w-full p-3 bg-green-500 text-white font-medium rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-700 focus:ring-offset-2 max-w-max">
+            Update
+          </button>
         </form>
       </div>
     </SWRSuspense>
   )
 }
 
-export default AuthGuard(Details)
+export default setUserLayout(AuthGuard(Details))

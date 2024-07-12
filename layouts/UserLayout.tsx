@@ -3,16 +3,17 @@ import DarkModeButton from '@/components/DarkModeButton'
 import Link from 'next/link'
 import {useRouter} from 'next/router'
 import {PropsWithChildren} from 'react'
+import _ from 'lodash'
 
 const inter = Inter({subsets: ['latin']})
 
-const NavbarLink = ({ href, children }: PropsWithChildren<{ href: string }>) => {
-  const router = useRouter();
+const NavbarLink = ({href, children}: PropsWithChildren<{ href: string }>) => {
+  const router = useRouter()
 
-  const isActive = router.pathname === href;
-  const baseClasses = "px-3 py-2 rounded-md text-sm font-medium hover:text-indigo-600";
-  const activeClasses = "font-bold border-b-2 border-indigo-600 text-indigo-600 dark:text-indigo-400";
-  const inactiveClasses = "text-zinc-800 dark:text-zinc-200";
+  const isActive = router.pathname === href
+  const baseClasses = 'px-3 py-2 rounded-md text-sm font-medium hover:text-indigo-600'
+  const activeClasses = 'font-bold border-b-2 border-indigo-600 text-indigo-600 dark:text-indigo-400'
+  const inactiveClasses = 'text-zinc-800 dark:text-zinc-200'
 
   return (
     <Link href={href}>
@@ -20,8 +21,8 @@ const NavbarLink = ({ href, children }: PropsWithChildren<{ href: string }>) => 
         {children}
       </span>
     </Link>
-  );
-};
+  )
+}
 
 function UserLayout({children}: PropsWithChildren) {
   return (
@@ -48,3 +49,5 @@ function UserLayout({children}: PropsWithChildren) {
 }
 
 export default UserLayout
+
+export const setUserLayout = (Component: any) => _.set(Component, 'layout', UserLayout)
