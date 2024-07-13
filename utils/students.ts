@@ -108,8 +108,7 @@ export const getAllTexasCourses = (term: string) => async () => {
       method: 'POST',
     })
 
-    console.log(await res.text())
-    return res.json()
+    return await res.json()
   } catch (error) {
     console.log(error)
     return []

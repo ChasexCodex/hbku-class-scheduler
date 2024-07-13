@@ -23,7 +23,7 @@ const AdminPage = () => {
   useEffect(() => {
     courses.setValue(data!.map(idify))
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data])
+  }, [])
 
   const handleAddCourse = () => {
     courses.add({

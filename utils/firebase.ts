@@ -1,16 +1,24 @@
 import {initializeApp} from 'firebase/app'
-import {getFirestore, connectFirestoreEmulator} from 'firebase/firestore'
-import {getAuth, connectAuthEmulator} from 'firebase/auth'
+import {connectFirestoreEmulator, getFirestore} from 'firebase/firestore'
+import {connectAuthEmulator, getAuth} from 'firebase/auth'
 import config from '@/utils/config'
 
 const firebaseConfig = config('firebase')
 
+const dev = config('env') === 'development'
+
 export const app = initializeApp(firebaseConfig)
-export const auth = getAuth(app)
-export const db = getFirestore(app)
 
-
-if (config('env') === 'development') {
-  connectAuthEmulator(auth, 'http://localhost:9099', {disableWarnings: true})
-  connectFirestoreEmulator(db, 'localhost', 8080)
+const _auth = getAuth(app)
+if (dev) {
+  console.log('Connecting to Auth emulator')
+  connectAuthEmulator(_auth, 'http://127.0.0.1:9099', {disableWarnings: true})
 }
+export const auth = _auth
+
+const _db = getFirestore(app)
+if (dev) {
+  console.log('Connecting to Firestore emulator')
+  connectFirestoreEmulator(_db, '127.0.0.1', 8080)
+}
+export const db = _db
