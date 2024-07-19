@@ -7,6 +7,7 @@ import useHBKUCourses from '@/hooks/useHBKUCourses'
 import {HBKUCourseType} from '@/types'
 import {setUserLayout} from '@/layouts/UserLayout'
 import Head from 'next/head'
+import AdminGuard from '@/components/AdminGuard'
 
 type CourseEntry = HBKUCourseType & { id: number }
 
@@ -115,4 +116,4 @@ const AdminPage = () => {
   )
 }
 
-export default setUserLayout(AdminPage)
+export default setUserLayout(AdminGuard(AdminPage))

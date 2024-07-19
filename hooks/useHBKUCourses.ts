@@ -3,9 +3,7 @@ import {getAllHBKUCourses, updateHBKUCourses} from '@/utils/students'
 import {HBKUCourseType} from '@/types'
 
 const useHBKUCourses = () => {
-  const swr = useSWR('hbku_courses', getAllHBKUCourses, {
-    fallbackData: [],
-  })
+  const swr = useSWR('hbku_courses', getAllHBKUCourses)
 
   const update = async (courses: HBKUCourseType[]) => {
     const res = await updateHBKUCourses(courses)

@@ -14,9 +14,9 @@ export default function useStudentData(term: string) {
   const {user} = useAuth();
 
   const {mutate, ...swr} = useMultipleSWR<StudentDataType>([
-    {key: user?.data?.uid, dataName: 'studentData', fetcher: getStudentData, fallbackData: {}},
-    {key: 'hbku_courses', dataName: 'hbkuCourses', fetcher: getAllHBKUCourses, fallbackData: []},
-    {key: config('coursesApi'), dataName: 'howdy', fetcher: getAllTexasCourses(term), fallbackData: []}
+    {key: user?.data?.uid, dataName: 'studentData', fetcher: getStudentData},
+    {key: 'hbku_courses', dataName: 'hbkuCourses', fetcher: getAllHBKUCourses},
+    {key: config('coursesApi'), dataName: 'howdy', fetcher: getAllTexasCourses(term)}
   ])
 
   const update = async (data: any) => {
