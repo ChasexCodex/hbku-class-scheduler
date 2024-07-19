@@ -18,6 +18,7 @@ const HBKUCourseTimings = ({crns, courses, timings, handleTimingsChange, handleA
       <div className="space-y-2">
         {crns?.map(e => getHBKUCourseDetails(e, courses)!)
             .filter(e => e)
+            .toSorted((a, b) => a.name.localeCompare(b.name))
             .map(e => (
               <div key={e.crn} className="space-y-2 border-2 p-2 w-full bg-zinc-200 dark:bg-zinc-700 rounded-md border-gray-600">
                 <p className="text-grey-700 dark:text-gray-100">{e.name} ({e.title})</p>

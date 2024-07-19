@@ -94,6 +94,7 @@ const TablePage = () => {
               {crns
                 .map(course => getTexasCourseDetails(course, data.howdy)!)
                 .filter(e => e)
+                .toSorted((a, b) => a.name.localeCompare(b.name) || a.section.localeCompare(b.section))
                 .map(({crn, ...details}) => (
                   <CourseCheckbox
                     key={crn}
