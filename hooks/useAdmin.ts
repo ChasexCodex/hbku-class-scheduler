@@ -13,11 +13,15 @@ const useAdmin = () => {
       return
     }
 
-    (async () => {
-      const token = await user.data.getIdTokenResult()
-      const isAdmin = !!token.claims.admin
-      setAdmin(isAdmin)
-    })()
+    user.data.getIdTokenResult()
+      .then((token: any) => {
+        const isAdmin = !!token.claims.admin
+        setAdmin(isAdmin)
+      })
+      .catch((e: Error) => {
+        console.log(e)
+        setAdmin(false)
+      })
   }, [loading, user]);
 
   return {user, admin, loading: loading || admin === null}

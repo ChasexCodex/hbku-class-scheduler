@@ -1,5 +1,6 @@
 import {PropsWithChildren} from 'react'
 import {SWRConfig} from 'swr'
+import config from '@/utils/config'
 
 const localStorageProvider = <K, V>() => {
   if (typeof window === 'undefined') return new Map<K, V>()
@@ -14,9 +15,11 @@ const localStorageProvider = <K, V>() => {
   return map
 }
 
+const provider = config('env') === 'development' ? localStorageProvider : undefined
+
 const SWRConfiguration = ({children}: PropsWithChildren) => {
   return (
-    <SWRConfig value={{provider: localStorageProvider, suspense: true}}>
+    <SWRConfig value={{provider, suspense: true}}>
       {children}
     </SWRConfig>
   )
