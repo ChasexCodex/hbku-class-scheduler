@@ -1,7 +1,7 @@
 import '@/styles/globals.css'
 import type {AppProps} from 'next/app'
 import {ComponentType, ReactNode} from 'react'
-import {AuthProvider} from '@/hooks/AuthContext'
+import AuthProvider from '@/hooks/AuthContext'
 import {ThemeProvider} from 'next-themes'
 import ErrorBoundary from '@/components/ErrorBoundary'
 import SWRConfiguration from '@/components/SWRConfiguration'

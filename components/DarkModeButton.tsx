@@ -1,12 +1,7 @@
 import {useTheme} from 'next-themes'
-import useMounted from '@/hooks/useMounted'
 
 const DarkModeButton = () => {
-  const {theme: storedTheme, setTheme} = useTheme()
-
-  const mounted = useMounted()
-
-  const theme = mounted ? storedTheme : 'light'
+  const {resolvedTheme: theme, setTheme} = useTheme()
 
   return (
     <button type="button" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
