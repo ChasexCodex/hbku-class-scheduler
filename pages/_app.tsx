@@ -5,6 +5,7 @@ import {AuthProvider} from '@/hooks/AuthContext'
 import {ThemeProvider} from 'next-themes'
 import ErrorBoundary from '@/components/ErrorBoundary'
 import SWRConfiguration from '@/components/SWRConfiguration'
+import {SpeedInsights} from '@vercel/speed-insights/next'
 
 type Props = {
   Component: AppProps['Component'] & { layout?: ComponentType }
@@ -35,6 +36,7 @@ export default function App({Component, pageProps}: Props) {
         <Layout>
           <Component {...pageProps} />
         </Layout>
+        <SpeedInsights/>
       </Providers>
     </ErrorBoundary>
   )

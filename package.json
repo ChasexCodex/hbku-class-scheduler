@@ -10,6 +10,7 @@
     "emulators": "firebase emulators:start --only auth,firestore --import=./.firebase --export-on-exit"
   },
   "dependencies": {
+    "@vercel/speed-insights": "^1.0.12",
     "firebase": "^10.12.2",
     "lodash": "^4.17.21",
     "next": "14.2.4",
