@@ -1,7 +1,7 @@
-import useMultipleSWR from "@/hooks/useMultipleSWR";
-import config from "@/utils/config";
-import {getAllHBKUCourses, getAllStudentsData, getAllTexasCourses} from "@/utils/students";
-import {HBKUCourseType, StudentData, SWVEntry} from "@/types";
+import useMultipleSWR from '@/hooks/useMultipleSWR'
+import config from '@/utils/config'
+import {getAllHBKUCourses, getAllStudentsData, getAllTexasCourses} from '@/utils/students'
+import {HBKUCourseType, StudentData, SWVEntry} from '@/types'
 
 type DataType = {
   studentsCourses: StudentData[]

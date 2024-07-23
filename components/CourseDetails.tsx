@@ -2,8 +2,8 @@ import {getHBKUCourseDetails, getTexasCourseDetails} from '@/utils/students'
 import {HBKUCourseType, SWVEntry} from '@/types'
 
 type Props = {
-  hoveredCell?: string,
-  howdy: SWVEntry[],
+  hoveredCell?: string
+  howdy: SWVEntry[]
   hbkuCourses: HBKUCourseType[]
 }
 
@@ -21,9 +21,15 @@ const CourseDetails = ({hoveredCell, howdy, hbkuCourses}: Props) => {
     <div className="p-4 border-2 border-gray-400 rounded-lg">
       <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Course Details</h2>
       <p className="mt-2 text-gray-700 dark:text-gray-300">Name: <span className="font-medium">{details.name}</span></p>
-      {'section' in details && <p className="text-gray-700 dark:text-gray-300">Section: <span className="font-medium">{details.section}</span></p>}
-      <p className="text-gray-700 dark:text-gray-300">Title: <span className="font-medium">{details.title}</span></p>
-      <p className="text-gray-700 dark:text-gray-300">CRN: <span className="font-medium">{hoveredCell}</span></p>
+      {'section' in details &&
+        <p className="text-gray-700 dark:text-gray-300">Section: <span className="font-medium">{details.section}</span>
+        </p>}
+      <p className="text-gray-700 dark:text-gray-300">
+        Title: <span className="font-medium">{details.title}</span>
+      </p>
+      <p className="text-gray-700 dark:text-gray-300">
+        CRN: <span className="font-medium">{hoveredCell}</span>
+      </p>
     </div>
   )
 }

@@ -16,11 +16,12 @@ const HBKUCourseTimings = ({crns, courses, timings, handleTimingsChange, handleA
     <div className="rounded-lg border-2 border-gray-400 px-4 pb-4 pt-2">
       <p className="text-xl mb-4 font-semibold text-gray-700 dark:text-gray-100">HBKU Courses Timings</p>
       <div className="space-y-2">
-        {crns?.map(e => getHBKUCourseDetails(e, courses)!)
+        {crns.map(e => getHBKUCourseDetails(e, courses)!)
             .filter(e => e)
             .toSorted((a, b) => a.name.localeCompare(b.name))
             .map(e => (
-              <div key={e.crn} className="space-y-2 border-2 p-2 w-full bg-zinc-200 dark:bg-zinc-700 rounded-md border-gray-600">
+              <div key={e.crn}
+                   className="space-y-2 border-2 p-2 w-full bg-zinc-200 dark:bg-zinc-700 rounded-md border-gray-600">
                 <p className="text-grey-700 dark:text-gray-100">{e.name} ({e.title})</p>
                 {timings[e.crn]?.map((t, i) => (
                     <div key={i}

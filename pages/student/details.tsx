@@ -5,21 +5,22 @@ import {currentTerm} from '@/utils/const'
 import {checkNumeric, submitForm} from '@/utils/form'
 import {setUserLayout} from '@/layouts/UserLayout'
 import Head from 'next/head'
+import {StudentData} from '@/types'
 
 function Details() {
   const {data, update} = useStudentData(currentTerm)
   const {studentData} = data
 
-  const handleSubmit = async (formData: FormData) => {
+  const handleSubmit = (formData: FormData) => {
     const data = {
       name: formData.get('name'),
       year: formData.get('year'),
       uid: formData.get('uid'),
       texas_courses: formData.getAll('texas_courses[]'),
       hbku_courses: formData.getAll('hbku_courses[]'),
-    }
+    } as StudentData
 
-    await update(data)
+    update(data).catch(console.error)
   }
 
   return (

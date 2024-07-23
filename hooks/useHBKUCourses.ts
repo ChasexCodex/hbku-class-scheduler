@@ -5,20 +5,9 @@ import {HBKUCourseType} from '@/types'
 const useHBKUCourses = () => {
   const swr = useSWR('hbku_courses', getAllHBKUCourses)
 
-  const update = async (courses: HBKUCourseType[]) => {
-    const res = await updateHBKUCourses(courses)
+  const update = (courses: HBKUCourseType[]) => updateHBKUCourses(courses).then(swr.mutate)
 
-    if (res.success) {
-      await swr.mutate(res.courses)
-    }
-
-    return res
-  }
-
-  return {
-    ...swr,
-    update,
-  }
+  return {...swr, update}
 }
 
 export default useHBKUCourses

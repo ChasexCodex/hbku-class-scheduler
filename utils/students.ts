@@ -14,21 +14,9 @@ export const getStudentData = async (uid: string) => {
   return snapshot.data() as StudentData
 }
 
-export const updateStudentData = async (uid: string, data: object) => {
+export const updateStudentData = (uid: string, data: StudentData) => {
   const d = doc(db, 'students', uid)
-  return await updateDoc(d, data)
-    .then(() => ({
-      success: true,
-      data,
-    }))
-    .catch(e => {
-      console.log(e)
-
-      return ({
-        success: false,
-        error: e,
-      })
-    })
+  return updateDoc(d, data).then(() => ({data}))
 }
 
 export const createStudentData = async (uid: string, data: object) => {
@@ -85,18 +73,8 @@ export const updateHBKUCourses = async (courses: HBKUCourseType[]) => {
     }
   })
 
-  try {
-    await batch.commit()
-    return {
-      success: true,
-      courses,
-    }
-  } catch (e) {
-    return {
-      success: false,
-      error: e,
-    }
-  }
+  await batch.commit()
+  return courses
 }
 
 export const getAllTexasCourses = (term: string) => () => {

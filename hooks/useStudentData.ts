@@ -19,10 +19,7 @@ export default function useStudentData(term: string) {
     {key: config('coursesApi'), dataName: 'howdy', fetcher: getAllTexasCourses(term)},
   ])
 
-  const update = async (data: any) => {
-    await updateStudentData(user.uid, data)
-    await mutate.studentData()
-  }
+  const update = (data: StudentData) => updateStudentData(user.uid, data).then(mutate.studentData)
 
   return {...swr, update}
 }

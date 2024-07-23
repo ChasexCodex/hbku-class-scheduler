@@ -1,11 +1,11 @@
 type Props = {
-  course: string;
-  details: any;
-  selected: boolean;
-  onChange: () => void;
-};
+  course: string
+  details: any
+  selected: boolean
+  onChange: () => void
+}
 
-const CourseCheckbox = ({ course, details, selected, onChange }: Props) => {
+const CourseCheckbox = ({course, details, selected, onChange}: Props) => {
   return (
     <div className="flex items-center space-x-2 p-1 bg-zinc-50 dark:bg-zinc-700 rounded-lg">
       <input
@@ -14,16 +14,17 @@ const CourseCheckbox = ({ course, details, selected, onChange }: Props) => {
         name={course}
         checked={selected}
         onChange={onChange}
-        className="hidden" // Hide the default checkbox
+        className="hidden"
       />
       <div
-        onClick={onChange} // Toggle custom checkbox on div click
+        onClick={onChange}
         className={`w-4 h-4 flex justify-center items-center border border-gray-300 rounded-sm cursor-pointer ${
           selected ? 'bg-blue-500' : 'bg-transparent'
         }`}
       >
         {selected && (
-          <svg className="w-3 h-3 text-white" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
+          <svg className="w-3 h-3 text-white" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+               viewBox="0 0 24 24" stroke="currentColor">
             <path d="M5 13l4 4L19 7"></path>
           </svg>
         )}
@@ -32,7 +33,7 @@ const CourseCheckbox = ({ course, details, selected, onChange }: Props) => {
         {details.name} - {details.section} ({details.title})
       </label>
     </div>
-  );
-};
+  )
+}
 
-export default CourseCheckbox;
+export default CourseCheckbox

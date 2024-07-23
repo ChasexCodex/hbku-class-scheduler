@@ -3,8 +3,8 @@ import {HBKUTimingsState, LectureTime, MappedTiming} from '@/types'
 import {days} from '@/utils/const'
 
 type Props = {
-  texasTimings: LectureTime[],
-  onCellHover: (crn: string, enter: boolean) => void,
+  texasTimings: LectureTime[]
+  onCellHover: (crn: string, enter: boolean) => void
   hbkuTimings: HBKUTimingsState
 }
 
@@ -88,8 +88,7 @@ const Table = ({texasTimings, hbkuTimings, onCellHover}: Props) => {
                   </div>
                 ))}
             </div>
-          ))
-          }
+          ))}
         </div>
       </div>
     </div>
