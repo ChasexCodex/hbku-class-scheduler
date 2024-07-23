@@ -11,9 +11,9 @@ type DataType = {
 
 const useCourses = (term: string) => {
   return useMultipleSWR<DataType>([
-    {key: 'studentsCourses', dataName: 'studentsCourses', fetcher: getAllStudentsData, fallbackData: []},
-    {key: config('coursesApi'), dataName: 'howdy', fetcher: getAllTexasCourses(term), fallbackData: []},
-    {key: 'hbku_courses', dataName: 'hbkuCourses', fetcher: getAllHBKUCourses, fallbackData: []},
+    {key: 'studentsCourses', dataName: 'studentsCourses', fetcher: getAllStudentsData},
+    {key: config('coursesApi'), dataName: 'howdy', fetcher: getAllTexasCourses(term)},
+    {key: 'hbku_courses', dataName: 'hbkuCourses', fetcher: getAllHBKUCourses},
   ])
 }
 

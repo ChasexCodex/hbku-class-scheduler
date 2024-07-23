@@ -9,11 +9,15 @@ export async function POST(req: NextRequest) {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
-        "startRow": 0,
-        "endRow": 0,
-        "termCode": `${term}`,
-        "publicSearch": "Y"
+        'startRow': 0,
+        'endRow': 0,
+        'termCode': `${term}`,
+        'publicSearch': 'Y',
       }),
+      cache: 'force-cache',
+      next: {
+        revalidate: 3600,
+      },
     })
 
     const json = await res.json()

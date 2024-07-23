@@ -1,24 +1,20 @@
 import Link from 'next/link'
 import {logout} from '@/utils/auth'
-import AuthGuard from '@/components/AuthGuard'
-import useAdmin from '@/hooks/useAdmin'
 import {setUserLayout} from '@/layouts/UserLayout'
 import {useState} from 'react'
 import Head from 'next/head'
+import {useUser} from '@/hooks/AuthContext'
 
 function StudentDashboard() {
-  const {admin, loading} = useAdmin()
+  const user = useUser()
   const [error, setError] = useState('')
 
-  const handleSubmit = async () => {
-    const res = await logout()
-
-    if (res.success) {
-      console.log('Logout successful')
-    } else {
-      console.log('Logout failed', res.error)
-      setError('Logout failed. Please try again.') // Set error message
-    }
+  const handleSubmit = () => {
+    logout()
+      .catch((error) => {
+        console.log('Logout failed', error)
+        setError('Logout failed. Please try again.')
+      })
   }
 
   return (
@@ -29,7 +25,7 @@ function StudentDashboard() {
       <div className="bg-zinc-200 dark:bg-zinc-900 shadow rounded-lg p-8 mb-6 w-full max-w-md">
         <p className="text-xl font-semibold mb-4">Welcome</p>
         <div className="flex flex-row justify-between">
-          {!loading && admin &&
+          {user.admin &&
             <>
               <Link href="/student/table"
                     className="block bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded text-center w-max">
@@ -60,4 +56,4 @@ function StudentDashboard() {
   )
 }
 
-export default setUserLayout(AuthGuard(StudentDashboard))
+export default setUserLayout(StudentDashboard)

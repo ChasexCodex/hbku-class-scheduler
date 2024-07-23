@@ -1,8 +1,7 @@
-import AdminGuard from '@/components/AdminGuard'
 import useCourses from '@/hooks/useCourses'
 import {getDistinctCoursesList, getLectureTimings} from '@/utils/table'
 import Table from '@/components/Table'
-import {useState} from 'react'
+import {useEffect, useMemo, useState} from 'react'
 import {getTexasCourseDetails} from '@/utils/students'
 import {currentTerm, years} from '@/utils/const'
 import {setState} from '@/utils/form'
@@ -10,28 +9,35 @@ import CourseCheckbox from '@/components/CourseCheckbox'
 import CourseDetails from '@/components/CourseDetails'
 import {useArrayState, useObjectState} from '@/hooks/state'
 import {load, save} from '@/utils/storage'
-import {HBKUCourseType, HBKUTiming, HBKUTimingsState} from '@/types'
+import {HBKUTiming, HBKUTimingsState} from '@/types'
 import _ from 'lodash'
 import {setUserLayout} from '@/layouts/UserLayout'
 import HBKUCourseTimings from '@/components/HBKUCourseTimings'
 import Head from 'next/head'
+import useAdmin from '@/hooks/useAdmin'
 
 const TablePage = () => {
+  const {} = useAdmin()
   const {data} = useCourses(currentTerm)
   const [year, setYear] = useState(3)
   const [hoveredCell, setHoveredCell] = useState<string>()
   const hbkuTimings = useObjectState<HBKUTimingsState>(() => {
     const savedTimings = load<HBKUTimingsState>('hbkuTimings', {})
-    const s = data.hbkuCourses.flatMap((e: HBKUCourseType) => e.crn)
-    return Object.fromEntries(s.map((e: string) => [e, savedTimings[e] || []]))
+    const s = data.hbkuCourses.flatMap((e) => e.crn)
+    return Object.fromEntries(s.map(e => [e, savedTimings[e] || []]))
   })
 
-  const crns = (data && data.studentsCourses) ? getDistinctCoursesList(data.studentsCourses, year) : []
-  const coursesSelection = useArrayState(crns)
+  const crns = useMemo(() => getDistinctCoursesList(data.studentsCourses, year), [data.studentsCourses, year])
+  const coursesSelection = useArrayState<string>([])
+
+  useEffect(() => {
+    coursesSelection.setValue(crns)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [crns])
 
   const timings = getLectureTimings(coursesSelection.value, data.howdy)
 
-  const hbkuCRNS = data.studentsCourses.flatMap((e: any) => e.hbku_courses)
+  const hbkuCRNS = data.studentsCourses.flatMap(e => e.hbku_courses)
 
   const handleSelectionChange = (course: string) => {
     if (coursesSelection.value.includes(course)) {
@@ -70,7 +76,7 @@ const TablePage = () => {
       <h1 className="text-3xl font-bold">Table Page</h1>
       <select className="py-1 px-2 rounded-md" value={year} onChange={setState(setYear)}>
         {years.map((e, i) => (
-          <option key={i} value={i + 1}>{e}</option>
+          <option key={e} value={i + 1}>{e}</option>
         ))}
       </select>
       <Table
@@ -116,4 +122,4 @@ const TablePage = () => {
   )
 }
 
-export default setUserLayout(AdminGuard(TablePage))
+export default setUserLayout(TablePage)

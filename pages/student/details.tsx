@@ -1,4 +1,3 @@
-import AuthGuard from '@/components/AuthGuard'
 import useStudentData from '@/hooks/useStudentData'
 import CourseList from '@/components/CourseList'
 import {getHBKUCourseDetails, getTexasCourseDetails} from '@/utils/students'
@@ -66,4 +65,4 @@ function Details() {
   )
 }
 
-export default setUserLayout(AuthGuard(Details))
+export default setUserLayout(Details)

@@ -1,7 +1,9 @@
-import {ComponentType} from "react";
-
 export type User = {
-  data: any
+  name: string
+  email: string
+  verified: boolean
+  admin: boolean
+  uid: string
 }
 
 export type StudentData = {
@@ -71,8 +73,6 @@ interface JsonClob {
   SSRMEET_ROOM_CODE: string;
   SSRMEET_MTYP_CODE: string;
 }
-
-export type PageWithLayout = ComponentType & { layout?: ComponentType }
 
 export type HBKUCourseType = {
   crn: string

@@ -1,37 +1,38 @@
-import {createContext, useContext, useState, useEffect, ReactNode, PropsWithChildren} from 'react';
-import {onAuthStateChange} from "@/utils/auth";
-import {User} from "@/types";
+import {createContext, PropsWithChildren, useContext, useEffect, useState} from 'react'
+import {onAuthStateChange} from '@/utils/auth'
+import {User} from '@/types'
 
 type AuthContextType = {
-  user: any;
-  loading: boolean;
+  user: User | undefined
+  isLoading: boolean
 }
 
 const defaultAuthContext: AuthContextType = {
-  user: null,
-  loading: true,
-};
+  user: undefined,
+  isLoading: true,
+}
 
-const AuthContext = createContext<AuthContextType>(defaultAuthContext);
+const AuthContext = createContext<AuthContextType>(defaultAuthContext)
 
 export const AuthProvider = ({children}: PropsWithChildren) => {
-  const [user, setUser] = useState<User>();
-  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState<User>()
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     return onAuthStateChange((user) => {
-      setUser({data: user});
-      setLoading(false)
+      setUser(user)
+      setIsLoading(false)
     })
-  }, []);
+  }, [])
 
   return (
-    <AuthContext.Provider value={{user, loading}}>
+    <AuthContext.Provider value={{user, isLoading}}>
       {children}
     </AuthContext.Provider>
-  );
-};
+  )
+}
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () => useContext(AuthContext)
+export const useUser = () => useContext(AuthContext).user!
 
-export default AuthContext;
+export default AuthContext

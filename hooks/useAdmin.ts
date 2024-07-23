@@ -1,30 +1,19 @@
-import {useAuth} from "@/hooks/AuthContext";
-import {useEffect, useState} from "react";
+import {useAuth} from '@/hooks/AuthContext'
+import {useRouter} from 'next/router'
+import {useEffect} from 'react'
+import {routes} from '@/utils/const'
 
 const useAdmin = () => {
-  const {user, loading} = useAuth()
-  const [admin, setAdmin] = useState<boolean | null>(null)
+  const {isLoading, user} = useAuth()
+  const router = useRouter()
 
   useEffect(() => {
-    if (loading) return
-
-    if (!user.data) {
-      setAdmin(false)
-      return
+    if (!isLoading && !user?.admin) {
+      router.replace(routes.login)
     }
+  }, [isLoading, user, router])
 
-    user.data.getIdTokenResult()
-      .then((token: any) => {
-        const isAdmin = !!token.claims.admin
-        setAdmin(isAdmin)
-      })
-      .catch((e: Error) => {
-        console.log(e)
-        setAdmin(false)
-      })
-  }, [loading, user]);
-
-  return {user, admin, loading: loading || admin === null}
+  return {isLoading, user}
 }
 
 export default useAdmin

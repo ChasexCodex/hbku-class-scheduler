@@ -1,65 +1,65 @@
-import {signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, sendEmailVerification} from '@firebase/auth'
+import {
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+  signInWithEmailAndPassword,
+  signOut,
+} from '@firebase/auth'
 import {auth} from '@/utils/firebase'
 import {createStudentData} from '@/utils/students'
 import config from '@/utils/config'
+import {routes} from '@/utils/const'
+import {User as FirebaseUser} from 'firebase/auth'
+import {User} from '@/types'
 
 export const login = async (data: FormData) => {
   const email = data.get('email') as string
   const password = data.get('password') as string
 
-  try {
-    const res = await signInWithEmailAndPassword(auth, email, password)
-    return {success: true, data: res}
-  } catch (e) {
-    const {message} = e as Error
-    return {success: false, error: message}
-  }
+  return signInWithEmailAndPassword(auth, email, password)
 }
 
-export const logout = async () => {
-  try {
-    await signOut(auth)
-    return {success: true}
-  } catch (e) {
-    const {message} = e as Error
-    return {success: false, error: message}
-  }
+export const logout = () => {
+  return signOut(auth)
 }
 
-export const signup = async (data: FormData) => {
+export const signup = (data: FormData) => {
   const email = data.get('email') as string
   const password = data.get('password') as string
 
-  try {
-    const createUserResponse = await createUserWithEmailAndPassword(auth, email, password)
-    const createStudentDataResponse = await createStudentData(createUserResponse.user.uid, {
-      name: data.get('name') as string,
-      year: data.get('year') as string,
-      uid: data.get('uid') as string,
-      texas_courses: [],
-      hbku_courses: [],
+  return createUserWithEmailAndPassword(auth, email, password)
+    .then(async ({user}) => {
+      await createStudentData(user.uid, {
+        name: data.get('name') as string,
+        year: data.get('year') as string,
+        uid: data.get('uid') as string,
+        texas_courses: [],
+        hbku_courses: [],
+      })
+      return user
     })
-    return {success: true, data: {createUserResponse, createStudentDataResponse}}
-  } catch (e) {
-    const {message} = e as Error
-    return {success: false, error: message}
-  }
 }
 
-export const onAuthStateChange = (callback: (user: any) => void) => {
-  return auth.onAuthStateChanged(user => {
-    callback(user)
+export const onAuthStateChange = (callback: (user: User | undefined) => void) => {
+  return auth.onAuthStateChanged(firebaseUser => {
+    getUserFromAuth(firebaseUser).then(callback)
   })
 }
 
-export const sendVerificationEmail = async (user: any) => {
-  try {
-    await sendEmailVerification(user, {
-      url: `${config('appUrl')}/student/dashboard`
-    })
-    return {success: true}
-  } catch (e) {
-    const {message} = e as Error
-    return {success: false, error: message}
+export const sendVerificationEmail = (user: any) => {
+  return sendEmailVerification(user, {
+    url: `${config('appUrl')}${routes.dashboard}`,
+  })
+}
+
+export const getUserFromAuth = async (user: FirebaseUser | null): Promise<User | undefined> => {
+  if (!user) return undefined
+
+  const token = await user.getIdTokenResult()
+  return {
+    name: user.displayName || '',
+    email: user.email || '',
+    verified: user.emailVerified,
+    admin: !!token.claims.admin,
+    uid: user.uid,
   }
 }

@@ -1,8 +1,8 @@
-import {useAuth} from "@/hooks/AuthContext";
-import {getAllHBKUCourses, getAllTexasCourses, getStudentData, updateStudentData} from "@/utils/students";
-import useMultipleSWR from "@/hooks/useMultipleSWR";
-import config from "@/utils/config";
-import {HBKUCourseType, StudentData, SWVEntry} from "@/types";
+import {useUser} from '@/hooks/AuthContext'
+import {getAllHBKUCourses, getAllTexasCourses, getStudentData, updateStudentData} from '@/utils/students'
+import useMultipleSWR from '@/hooks/useMultipleSWR'
+import config from '@/utils/config'
+import {HBKUCourseType, StudentData, SWVEntry} from '@/types'
 
 type StudentDataType = {
   studentData: StudentData
@@ -11,17 +11,17 @@ type StudentDataType = {
 }
 
 export default function useStudentData(term: string) {
-  const {user} = useAuth();
+  const user = useUser()
 
   const {mutate, ...swr} = useMultipleSWR<StudentDataType>([
-    {key: user?.data?.uid, dataName: 'studentData', fetcher: getStudentData},
+    {key: user.uid, dataName: 'studentData', fetcher: getStudentData},
     {key: 'hbku_courses', dataName: 'hbkuCourses', fetcher: getAllHBKUCourses},
-    {key: config('coursesApi'), dataName: 'howdy', fetcher: getAllTexasCourses(term)}
+    {key: config('coursesApi'), dataName: 'howdy', fetcher: getAllTexasCourses(term)},
   ])
 
   const update = async (data: any) => {
-    await updateStudentData(user.data.uid, data);
-    await mutate.studentData();
+    await updateStudentData(user.uid, data)
+    await mutate.studentData()
   }
 
   return {...swr, update}

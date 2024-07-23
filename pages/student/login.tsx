@@ -1,22 +1,20 @@
 import {Inter} from 'next/font/google'
 import {useState} from 'react'
-import {useRouter} from 'next/router'
 import {login, sendVerificationEmail, signup} from '@/utils/auth'
-import AuthGuard from '@/components/AuthGuard'
 import {years} from '@/utils/const'
 import {checkNumeric, submitForm} from '@/utils/form'
 import DarkModeButton from '@/components/DarkModeButton'
 import Head from 'next/head'
+import {setGuestLayout} from '@/layouts/GuestLayout'
 
 const inter = Inter({subsets: ['latin']})
 
 function LoginPage() {
-  const router = useRouter()
   const [error, setError] = useState<string | undefined>()
   const [message, setMessage] = useState<string | undefined>(undefined)
   const [newUser, setNewUser] = useState(false)
 
-  const handleSubmit = async (formData: FormData) => {
+  const handleSubmit = (formData: FormData) => {
     // assert emails are hbku emails
     if (!formData.get('email')?.toString().endsWith('@hbku.edu.qa')) {
       return setError('Please use your HBKU email')
@@ -26,24 +24,15 @@ function LoginPage() {
       return setError('Passwords do not match')
     }
 
-    const res = await (newUser ? signup : login)(formData)
+    const signupChain = () => signup(formData)
+      .then(sendVerificationEmail)
+      .then(() => setMessage('Verification Email sent'));
 
-    if (res.success) {
-      if (newUser) {
-        const res2 = await sendVerificationEmail((res.data as any).createUserResponse.user)
-        if (!res2.success) {
-          setError(res2.error)
-          return
-        }
-        setMessage('Verification email sent. Please verify your email then log in.')
-        return
-      }
-      await router.replace('/student/dashboard')
-      return
-    }
-
-    console.log(res)
-    setError(res.error)
+    (newUser ? signupChain() : login(formData))
+      .catch(e => {
+        console.error(e)
+        setError(e.message)
+      })
   }
 
   return (
@@ -150,4 +139,4 @@ function LoginPage() {
   )
 }
 
-export default AuthGuard(LoginPage, true)
+export default setGuestLayout(LoginPage)

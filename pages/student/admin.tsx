@@ -7,7 +7,6 @@ import useHBKUCourses from '@/hooks/useHBKUCourses'
 import {HBKUCourseType} from '@/types'
 import {setUserLayout} from '@/layouts/UserLayout'
 import Head from 'next/head'
-import AdminGuard from '@/components/AdminGuard'
 
 type CourseEntry = HBKUCourseType & { id: number }
 
@@ -37,8 +36,6 @@ const AdminPage = () => {
   }
 
   const handleSubmit = async (formData: FormData) => {
-    console.log('submitting')
-
     const data = {
       crn: formData.getAll('crn[]') as string[],
       title: formData.getAll('title[]') as string[],
@@ -52,8 +49,6 @@ const AdminPage = () => {
       name: data.name[i],
       instructor: data.instructor[i].split(',').map(name => name.trim()),
     }))
-
-    console.log('Courses being submitted:', courses)
 
     await update(courses)
   }
@@ -116,4 +111,4 @@ const AdminPage = () => {
   )
 }
 
-export default setUserLayout(AdminGuard(AdminPage))
+export default setUserLayout(AdminPage)

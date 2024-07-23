@@ -5,6 +5,9 @@ import {useRouter} from 'next/router'
 import {PropsWithChildren} from 'react'
 import _ from 'lodash'
 import SWRSuspense from '@/components/SWRSuspense'
+import {useAuth} from '@/hooks/AuthContext'
+import Loading from '@/components/Loading'
+import {routes} from '@/utils/const'
 
 const inter = Inter({subsets: ['latin']})
 
@@ -26,6 +29,18 @@ const NavbarLink = ({href, children}: PropsWithChildren<{ href: string }>) => {
 }
 
 function UserLayout({children}: PropsWithChildren) {
+  const {user, isLoading} = useAuth()
+  const router = useRouter()
+
+  if (isLoading) {
+    return <Loading/>
+  }
+
+  if (!user) {
+    router.replace(routes.login)
+    return
+  }
+
   return (
     <main
       className={`min-h-screen w-screen relative ${inter.className} bg-zinc-100 text-black dark:bg-zinc-800 dark:text-white flex flex-col`}>

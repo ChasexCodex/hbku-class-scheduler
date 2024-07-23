@@ -23,3 +23,8 @@ export const SWVDays: Partial<keyof JsonClob>[] = [
   'SSRMEET_FRI_DAY',
   'SSRMEET_SAT_DAY',
 ]
+
+export const routes = {
+  login: '/student/login',
+  dashboard: '/student/dashboard',
+}
