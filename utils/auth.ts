@@ -46,7 +46,7 @@ export const onAuthStateChange = (callback: (user: User | undefined) => void) =>
 }
 
 export const sendVerificationEmail = (user: any) => {
-  return
+  return Promise.resolve();
   return sendEmailVerification(user, {
     url: `${config('appUrl')}${routes.dashboard}`,
   })

@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
       }),
       cache: 'force-cache',
       next: {
-        revalidate: 60,
+        revalidate: 3600,
       },
     })
 

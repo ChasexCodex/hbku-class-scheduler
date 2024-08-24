@@ -10,7 +10,7 @@ function GuestLayout({children}: PropsWithChildren) {
 
   useEffect(() => {
     if (!isLoading && user) {
-      router.replace(routes.dashboard)
+      router.replace(routes.details)
       return
     }
   }, [isLoading, user, router])

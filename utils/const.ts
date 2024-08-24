@@ -27,4 +27,5 @@ export const SWVDays: Partial<keyof JsonClob>[] = [
 export const routes = {
   login: '/student/login',
   dashboard: '/student/dashboard',
+  details: '/student/details',
 }
