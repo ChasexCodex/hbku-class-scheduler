@@ -84,6 +84,7 @@ export const isCore = (course: string, howdyCourses: SWVEntry[]): boolean => {
   if (!courseData) return false
 
   const cores = load('cores')
+  if (!cores) return false
   const subject = `${courseData.SWV_CLASS_SEARCH_SUBJECT} ${courseData.SWV_CLASS_SEARCH_COURSE}`
 
   return cores.includes(subject)

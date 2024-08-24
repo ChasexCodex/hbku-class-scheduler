@@ -37,7 +37,7 @@ const TablePage = () => {
 
   const timings = getLectureTimings(coursesSelection.value, data.howdy)
 
-  const hbkuCRNS = data.studentsCourses.flatMap(e => e.hbku_courses)
+  const hbkuCRNS = Array.from(new Set(data.hbkuCourses.flatMap(e => e.crn)))
 
   const handleSelectionChange = (course: string) => {
     if (coursesSelection.value.includes(course)) {
