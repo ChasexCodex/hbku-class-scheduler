@@ -1,5 +1,5 @@
 import {initializeApp} from 'firebase/app'
-import {connectFirestoreEmulator, getFirestore} from 'firebase/firestore'
+import {connectFirestoreEmulator, getFirestore, setLogLevel} from 'firebase/firestore'
 import {connectAuthEmulator, getAuth} from 'firebase/auth'
 import config from '@/utils/config'
 
@@ -21,4 +21,7 @@ if (dev) {
   console.log('Connecting to Firestore emulator')
   connectFirestoreEmulator(_db, '127.0.0.1', 8080)
 }
+
+setLogLevel('debug');
+
 export const db = _db
